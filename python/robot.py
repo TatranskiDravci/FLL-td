@@ -13,7 +13,7 @@ class Robot:
         self.gyro = GyroSensor(Port.S1)
         self.sonic = UltrasonicSensor(Port.S2)
         self.gyro.reset_angle(0)
-        self.robot = DriveBase(self.left, self.right, wheels[0], wheels[1])\
+        self.robot = DriveBase(self.left, self.right, wheels[0], wheels[1])
 
     # reset distances and recalibrate gyroscope
     def reset():
