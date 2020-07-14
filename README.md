@@ -8,8 +8,6 @@
 │   ├── README.md
 │   ├── robot.py
 │   └── main.py
-├── utils
-│   └── 'any utilities for testing'
 ├── 'language name'
 │   ├── robot.x     function definitions
 │   ├── paths.x     collection of paths
