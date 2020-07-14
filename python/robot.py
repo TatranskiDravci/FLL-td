@@ -5,7 +5,7 @@ from pybricks.robotics import DriveBase
 from time import sleep
 
 class Robot:
-    
+
     # initialize Robot
     def __init__(self, left, right, gyro, sonic, wheels):
         self.left = Motor(Port.B)
@@ -24,7 +24,7 @@ class Robot:
         self.gyro.reset_angle(0)
 
     # max (speed) : deg/s, ang : deg, base (speed) : deg/s
-    def rot(max=40, ang=0, base=20):
+    def rotate(max=40, ang=0, base=20):
         backwards = False
         spd = base
         diff = max / base
@@ -59,7 +59,7 @@ class Robot:
                     backwards = True
 
     # max (speed) : mm/s, dist (from nearest wall) : cm, base (speed) : mm/s, err (max error allowed) : mm
-    def mov(max=40, dist=20, base=20, err=10):
+    def move(max=40, dist=20, base=20, err=10):
         spd = base
         cdist = dist * 10
         diff = max / base
