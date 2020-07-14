@@ -1,5 +1,5 @@
 # Python
-## Project structure
+## Structure
 Python interpreter: `pybricks-micropython` <br>
 Packages: `pybricks` <br>
 Structure:
