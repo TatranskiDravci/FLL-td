@@ -78,7 +78,7 @@ class Robot:
                     self.robot.drive(spd * -1, self.gyro.angle() * -1)
             else:
                 self.robot.stop()
-                self.rot(25, 0)
+                self.rotate(25, 0)
                 sleep(0.5)
                 if(self.sonic.distance() < cdist + err or self.sonic.distance() > cdist - err):
                     break
