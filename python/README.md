@@ -6,7 +6,7 @@ Structure:
 ```
 ./python/
 ├── README.md  documentation
-├── robot.py  function definitions
+├── robot.py   function definitions
 └── main.py    executable
 ```
 ## Usage
