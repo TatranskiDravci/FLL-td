@@ -1,4 +1,3 @@
-from pybricks import ev3brick as brick
 from pybricks.ev3devices import Motor, GyroSensor, UltrasonicSensor
 from pybricks.parameters import Port, Stop
 from pybricks.robotics import DriveBase
