@@ -4,28 +4,41 @@ from pybricks.parameters import Port, Stop
 from pybricks.robotics import DriveBase
 from time import sleep
 
-class Shifter:
+# TODO: write code for dropper module
+# TODO: write code for stick module
 
+# contains methods for modules connected to the shifter
+class Shifter:
+    # initialize Shifter object
     def __init__(self, sm, rm, angs=[0, 150, 300, 450]):
         self.sm = Motor(sm)
         self.rm = Motor(rm)
         self.angs = angs
 
+    # general module function :
     def run(self, index, spd, ang):
         self.sm.run_target(150, self.angs[index])
         self.rm.run_target(spd, ang)
 
+    def dropper(self):
+        # code for dropper module
+        pass
+
+    def stick(self):
+        # code for stick module
+        pass
+
+# contains methods for movement
 class Robot:
-
-    def linear(self, x, A, B):
-        y = (((B[1] - A[1]) / (B[0] - A[0])) * x) + (A[1] - (((B[1] - A[1]) / (B[0] - A[0])) * A[0]))
-        return y
-
-    # initialize Robot
+    # initialize Robot object
     def __init__(self, left, right, gyro, sonic, wheels):
         self.on_wp = 0
+        #   -> index of the last executed waypoint
         self.waypoints = []
+        #   -> stores waypoint map
         self.midpoints = []
+        #   -> stores distance between waipoints (useful for revert function)
+        # hardware connections
         self.left = Motor(left)
         self.right = Motor(right)
         self.gyro = GyroSensor(gyro)
@@ -33,7 +46,7 @@ class Robot:
         self.gyro.reset_angle(0)
         self.robot = DriveBase(self.left, self.right, wheels[0], wheels[1])
 
-    # recalibrate gyroscope
+    # [experimental] recalibrate gyroscope
     def reset(self):
         self.gyro.speed()
         self.gyro.angle()
@@ -58,23 +71,12 @@ class Robot:
                     self.gyro.reset_angle(0)
                     break
 
-    # spd : "mm/s", dist : cm, err : mm
-    def move(self, max=100, dist=20, err=10, base=50):
+    # move robot to specified distance ; spd : "mm/s", dist : cm, err : mm
+    def move(self, spd=100, dist=20, err=10):
         # convert distance from cm to mm
         dist = dist * 10
-        sdist = self.sonic.distance()
         while(True):
-            
             rdist = self.sonic.distance()
-
-            # speedup and slowdown code
-            if(rdist < sdist + 10):
-                spd = self.linear(rdist - sdist, (0, base), (10, max))
-            elif(rdist < dist - 10):
-                spd = max
-            else:
-                spd = self.linear(rdist - (dist - 10), (0, max), (10, base))
-
             brick.display.text(rdist)
             if(rdist < dist - err):
                 self.robot.drive(spd, self.gyro.angle() * -5 )
@@ -83,7 +85,7 @@ class Robot:
             else:
                 self.robot.stop()
                 self.gyro.reset_angle(0)
-                sleep(1)
+                sleep(1) # wait to ensure the measurement is correct
                 if(self.sonic.distance() < dist + err or self.sonic.distance() > dist - err):
                     break
 
@@ -91,25 +93,15 @@ class Robot:
     # create waypoint map ; waypoints : list<2-tuple>
     def wp_create(self, waypoints):
         self.waypoints = waypoints
-        self.midpoints.append(self.sonic.distance() / 10)
+        self.midpoints.append(self.sonic.distance() / 10) # create a midpoint
         self.on_wp = 0
 
-    # run waypoint map ; rspd : deg/s, mspd : "mm/s", err : mm
+    # execute waypoint map ; rspd : deg/s, mspd : "mm/s", err : mm
     def wp_exec(self, rspd=40, mspd=40, err=10):
         for i in range(self.on_wp, len(self.waypoints)):
             self.rotate(rspd, self.waypoints[i][0])
-            sleep(0.5)
-            self.midpoints.append(self.sonic.distance() / 10)
-            self.move(mspd, self.waypoints[i][1], err)
-        self.on_wp = len(self.waypoints)
-
-    # run waypoint map from x ; 
-    def wp_exec_from(self, wpn, rspd=40, mspd=40, err=10):
-        for i in range(wpn, len(self.waypoints)):
-            self.midpoints.pop()
-        for i in range(wpn, len(self.waypoints)):
-            self.rotate(rspd, self.waypoints[i][0])
-            self.midpoints.append(self.sonic.distance() / 10)
+            sleep(0.5) # wait to ensure correct measurement
+            self.midpoints.append(self.sonic.distance() / 10) # create a midpoint
             self.move(mspd, self.waypoints[i][1], err)
         self.on_wp = len(self.waypoints)
 
@@ -117,16 +109,18 @@ class Robot:
     def wp_append(self, waypoints):
         for point in waypoints:
             self.waypoints.append(point)
-    
+
+    # FIXME: didn't execute last run, unknown issue
     # revert back by x steps ; steps : int, rspd : deg/s, mspd : "mm/s", err : mm
     def wp_revert(self, steps=1, rspd=40, mspd=40, err=10):
+        # check if number of steps doesn't exceed the length of waypoint map
         if(steps > len(self.waypoints)):
             steps = len(self.waypoints)
+
         for i in range(steps):
-            self.move(mspd, self.midpoints[len(self.midpoints) - i - 1], err)
+            self.move(mspd, self.midpoints[len(self.midpoints) - i - 1], err) # move back to the selected midpoint
             self.rotate(rspd, self.waypoints[len(self.waypoints) - i - 1][0] * -1)
             self.waypoints.pop()
             self.midpoints.pop()
         self.on_wp = len(self.waypoints)
     # WAYPOINT CODE
-

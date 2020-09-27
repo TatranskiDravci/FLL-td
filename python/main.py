@@ -3,15 +3,15 @@
 from robot import *
 from pybricks.parameters import Port
 
-r = Robot(Port.A, Port.D, Port.S2, Port.S3, (30, 140))
+r = Robot(Port.D, Port.A, Port.S2, Port.S3, (30, 140))
 s = Shifter(Port.B, Port.C)
 
 r.wp_create(
     [
         (0, 20),
-        (90, 60)
+        (90, 30)
     ]
 )
-r.wp_exec(100, 120, 2)
-s.run(1, 350, 1500)
-r.wp_revert(2, 100, 120, 2)
+r.wp_exec(100, 150, 2)
+s.run(0, 300, -1000)
+r.revert(1, 100, 150, 2)
