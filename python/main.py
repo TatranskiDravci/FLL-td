@@ -1,17 +1,14 @@
 #!/usr/bin/env pybricks-micropython
 
-from robot import *
+import robot as rb
 from pybricks.parameters import Port
+from time import time
 
-r = Robot(Port.D, Port.A, Port.S2, Port.S3, (30, 140))
-s = Shifter(Port.B, Port.C)
+#
+r = rb.Robot(Port.D, Port.A, Port.S2, Port.S3, (30, 140))
+s = rb.Shifter(Port.B, Port.C)
 
-r.wp_create(
-    [
-        (0, 20),
-        (90, 30)
-    ]
-)
-r.wp_exec(100, 150, 2)
-s.run(0, 300, -1000)
-r.revert(1, 100, 150, 2)
+# move robot and collect movement data
+data, types = r.move()
+# save movement data
+rb.saveData(data, types)
