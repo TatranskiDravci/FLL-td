@@ -38,7 +38,7 @@ class Robot:
         self.gyro = GyroSensor(gyro)
         self.sonic = UltrasonicSensor(sonic)
         self.gyro.reset_angle(0)
-        self.robot = DriveBase(self.left, self.right, wheels[0], wheels[1])
+        self.robot = DriveBase(self.leftMotor, self.rightMotor, wheels[0], wheels[1])
 
     # parabolic velocity - velocity with respect to distance measured
     def velocity(self, currentDist, startDist, endDist, maxVel):

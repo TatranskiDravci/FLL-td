@@ -6,7 +6,6 @@ from time import time
 
 #
 r = rb.Robot(Port.D, Port.A, Port.S2, Port.S3, (30, 140))
-s = rb.Shifter(Port.B, Port.C)
 
 # move robot and collect movement data
 data, types = r.move()
