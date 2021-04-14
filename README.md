@@ -38,3 +38,10 @@ Structure:
 ├── main       executable
 ├── robot.go   function definitions
 └── main.go    main function
+```
+### Compiling
+```sh
+make
+# or
+make build
+```
