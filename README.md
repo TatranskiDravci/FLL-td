@@ -32,7 +32,7 @@ Version: `go, linux on ARM5` <br>
 Packages: `github.com/ev3go/ev3dev` <br>
 Structure:
 ```
-./python/
+./golang/
 ├── ...        additional files
 ├── Makefile
 ├── main       executable
