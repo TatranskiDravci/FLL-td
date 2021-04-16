@@ -26,3 +26,22 @@ Structure:
 ├── robot.py   function definitions
 └── main.py    executable
 ```
+
+## GO
+Version: `go, linux on ARM5` <br>
+Packages: `github.com/ev3go/ev3dev` <br>
+Structure:
+```
+./golang/
+├── ...        additional files
+├── Makefile
+├── main       executable
+├── robot.go   function definitions
+└── main.go    main function
+```
+### Compiling
+```sh
+make
+# or
+make build
+```
