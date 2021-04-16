@@ -29,13 +29,13 @@ func InitRobot(leftPort string, rightPort string, gyroPort string, ultraPort str
 	right,	_	:= ev3dev.TachoMotorFor("ev3-ports:out" + rightPort, "lego-ev3-l-motor")
 	gyro,	_	:= ev3dev.SensorFor("ev3-ports:in" + gyroPort, "lego-ev3-gyro")
 	ultra,	_	:= ev3dev.SensorFor("ev3-ports:in" + ultraPort, "lego-ev3-us") 
-	robot := Robot {
+	robotr := Robot {
 		leftMotor	: left,
 		rightMotor	: right,
 		gyroSensor	: gyro,
 		ultraSensor : ultra,
 	}
-	return robot
+	return robotr
 }
 
 func (r Robot) Steering(speed int, direction int, turnat int) {
@@ -85,7 +85,7 @@ func (r Robot) Move(speed int, distance int, threshold int, turnat int) {
 		if disti < (distance + threshold) && disti > (distance - threshold) {
 			r.leftMotor.Command("stop")
 			r.rightMotor.Command("stop")
-			time.Sleep(50 * time.Millisecond)
+			time.Sleep(70 * time.Millisecond)
 			dists, _ := r.ultraSensor.Value(0)
 			disti, _ := strconv.Atoi(dists)
 			if disti < (distance + threshold) && disti > (distance - threshold) {
@@ -122,7 +122,7 @@ func (r Robot) Rotate(speed int, angle int) {
 		} else if angi == angle {
 			r.leftMotor.Command("stop")
 			r.rightMotor.Command("stop")
-			time.Sleep(50 * time.Millisecond)
+			time.Sleep(70 * time.Millisecond)
 			angs, _ := r.gyroSensor.Value(0)
 			angi, _ := strconv.Atoi(angs)
 			if angi == angle {
