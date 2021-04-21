@@ -69,7 +69,11 @@ func (r Robot) Steering(speed int, direction int, turnat int) {
 	}
 }
 
-func (r Robot) Move(speed int, distance int, threshold int, turnat int) {
+// distance : mm (measured by ultrasonic sensor)
+// speed : motor units [unknown]
+// threshold : mm (acceptable error range)
+// turnat : abs. degrees (opposing motor deactivation point) <m @ https://www.desmos.com/calculator/rer9fypb24>
+func (r Robot) Move(distance int, speed int, threshold int, turnat int) {
 	r.leftMotor.SetStopAction("brake")
 	r.rightMotor.SetStopAction("brake")
 	r.gyroSensor.SetMode("GYRO-RATE")
@@ -104,7 +108,9 @@ func (r Robot) Move(speed int, distance int, threshold int, turnat int) {
 	}
 }
 
-func (r Robot) Rotate(speed int, angle int) {
+// angle : degrees (measured by the gyro sensor)
+// speed : motor units [unknown ]
+func (r Robot) Rotate(angle int, speed int) {
 	r.leftMotor.SetStopAction("brake")
 	r.rightMotor.SetStopAction("brake")
 	r.gyroSensor.SetMode("GYRO-RATE")

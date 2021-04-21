@@ -30,7 +30,7 @@ func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftrt i
 	return shifterr
 }
 
-
+// id : range : [0, 3] (module number)
 func (s Shifter) To(id int) {
 	originalState, _ := s.shifterMotor.State()
 	s.shifterMotor.SetStopAction("brake")
@@ -39,6 +39,8 @@ func (s Shifter) To(id int) {
 	for state, _ := s.shifterMotor.State(); state != originalState; state, _ = s.shifterMotor.State() {}
 }
 
+// target : degrees
+// speed : motor units [unknown]
 func (s Shifter) Run(target int, speed int) {
 	originalState, _ := s.runnerMotor.State()
 	s.runnerMotor.SetStopAction("brake")
@@ -47,6 +49,8 @@ func (s Shifter) Run(target int, speed int) {
 	for state, _ := s.runnerMotor.State(); state != originalState; state, _ = s.runnerMotor.State() {}
 }
 
+// target : degrees
+// speed : motor units [unknown]
 func (s Shifter) RunToAbs(target int, speed int) {
 	originalState, _ := s.runnerMotor.State()
 	s.runnerMotor.SetStopAction("brake")
