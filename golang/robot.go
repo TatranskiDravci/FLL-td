@@ -73,7 +73,9 @@ func (r Robot) Steering(speed int, direction int, turnat int) {
 // speed : motor units [unknown]
 // threshold : mm (acceptable error range)
 // turnat : abs. degrees (opposing motor deactivation point) <m @ https://www.desmos.com/calculator/rer9fypb24>
-func (r Robot) Move(distance int, speed int, threshold int, turnat int) {
+func (r Robot) Move(distance int, speed int, threshold int, turnat int, course int) {
+	radCourse := (math.Pi*float64(course)) / 180.0;
+	cosCourse := math.Cos(radCourse);
 	r.leftMotor.SetStopAction("brake")
 	r.rightMotor.SetStopAction("brake")
 	r.gyroSensor.SetMode("GYRO-RATE")
@@ -92,6 +94,9 @@ func (r Robot) Move(distance int, speed int, threshold int, turnat int) {
 			time.Sleep(70 * time.Millisecond)
 			dists, _ := r.ultraSensor.Value(0)
 			disti, _ := strconv.Atoi(dists)
+			radAng := (math.Pi*float64(angi)) / 180.0
+			distActual := float64(disti) * (math.Cos(radCourse + radAng) / cosCourse)
+			disti = int(distActual)
 			if disti < (distance + threshold) && disti > (distance - threshold) {
 				break
 			}
