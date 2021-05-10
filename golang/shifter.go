@@ -49,6 +49,12 @@ func (s Shifter) Run(target int, speed int) {
 	for state, _ := s.runnerMotor.State(); state != originalState; state, _ = s.runnerMotor.State() {}
 }
 
+func (s Shifter) RunUnbounded(target int, speed int) {
+	s.runnerMotor.SetStopAction("brake")
+	s.runnerMotor.SetSpeedSetpoint(speed)
+	s.runnerMotor.SetPositionSetpoint(target).Command("run-to-rel-pos")
+}
+
 // target : degrees
 // speed : motor units [unknown]
 func (s Shifter) RunToAbs(target int, speed int) {

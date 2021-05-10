@@ -17,32 +17,36 @@ type Lift struct {
 func InitLift(shifter Shifter, id int) Lift {
 	liftr := Lift {
 		shifter		: shifter,
-		height		: 7.0,
+		height		: 3.5,
 		id			: id,
 	}
 	return liftr
 }
 
-// target : cm (perpendicular distance of lifter pole from the ground)
 // speed : motor units [unknown]
 func (m *Lift) To(target float64, speed int) {
 	m.shifter.To(m.id)
-	targetAngf := -(180.0*(target - 7.0)) + (180.0*(m.height - 7.0))
+	targetAngf := -540.0*target
 	m.shifter.Run(int(targetAngf), speed)
+	m.height = target
+}
+
+func (m *Lift) ToUnbounded(target float64, speed int) {
+	m.shifter.To(m.id)
+	targetAngf := -540.0*target
+	m.shifter.RunUnbounded(int(targetAngf), speed)
 	m.height = target
 }
 
 
 type Carrier struct {
 	shifter		Shifter
-	contents	int
 	id			int
 }
 
-func InitCarrier(shifter Shifter, id int, contents int) Carrier {
+func InitCarrier(shifter Shifter, id int) Carrier {
 	carrierr := Carrier {
 		shifter		: shifter,
-		contents	: contents,
 		id			: id,
 	}
 	return carrierr
@@ -50,34 +54,25 @@ func InitCarrier(shifter Shifter, id int, contents int) Carrier {
 
 // count : unitless (number of bricks to release)
 // speed : motor units [unknown]
-func (m *Carrier) Release(count int, speed int) {
+func (m *Carrier) Release(speed int) {
 	m.shifter.To(m.id)
-	targetAng := 0;
-	if count <= m.contents {
-		targetAng = -920*count
-	} else {
-		targetAng = -920*m.contents
-	}
-	m.shifter.Run(targetAng, speed)
-	m.contents -= count
+	m.shifter.Run(360, speed)
 }
 
-type Wheel struct {
-	shifter 	Shifter
-	id			int
+type Box struct {
+	shifter Shifter
+	id		int
 }
 
-func InitWheel(shifter Shifter, id int) Wheel {
-	wheelr := Wheel {
+func InitBox(shifter Shifter, id int) Box {
+	boxr := Box {
 		shifter		: shifter,
 		id			: id,
 	}
-	return wheelr
+	return boxr
 }
 
-// target : motor angle
-// speed : motor units [unknown]
-func (m Wheel) Run(target int, speed int) {
+func (m *Box) Release(speed int) {
 	m.shifter.To(m.id)
-	m.shifter.Run(target, speed)
+	m.shifter.Run(-150, speed)
 }
