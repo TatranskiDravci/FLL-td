@@ -26,8 +26,8 @@ LIB = src/fmath.go src/robot.go src/modules.go src/shifter.go
 foo:
     bar
 ```
- - PLATFORM - platform specifications
- - LIB - ofter reused, non-RG-run go files from src/
+ - ***PLATFORM*** - platform specifications
+ - ***LIB*** - ofter reused, non-RG-run go files from src/
 
 ### Example:
 Make instructions for run_X.go:
