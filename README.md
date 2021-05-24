@@ -17,3 +17,21 @@ A (hopefully) successful successor to FLL-evicka. Written in golang
     ├── robot.go			--> movement code
     └── shifter.go			--> code for shifter
 ```
+
+## Makefile Structure
+```make
+PLATFORM = GOOS=linux GOARCH=arm GOARM=5
+LIB = src/fmath.go src/robot.go src/modules.go src/shifter.go
+
+foo:
+    bar
+```
+ - ***PLATFORM*** - platform specifications
+ - ***LIB*** - ofter reused, non-RG-run go files from src/
+
+### Example:
+Make instructions for run_X.go:
+```make
+run_X:
+    $(PLATFORM) go build -o build/run_X src/run_X.go $(LIB)
+```
