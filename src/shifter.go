@@ -6,7 +6,7 @@ import (
 	// "github.com/ev3go/ev3dev/fb"
 	// "math"
 	// "time"
-	// "fmt"
+	"fmt"
 )
 
 type Shifter struct {
@@ -63,4 +63,11 @@ func (s Shifter) RunToAbs(target int, speed int) {
 	s.runnerMotor.SetSpeedSetpoint(speed)
 	s.runnerMotor.SetPositionSetpoint(target).Command("run-to-abs-pos")
 	for state, _ := s.runnerMotor.State(); state != originalState; state, _ = s.runnerMotor.State() {}
+}
+
+func (s Shifter) Await(id int) {
+	select id {
+	case 0:
+		 
+	}
 }
