@@ -6,7 +6,7 @@ import (
 	// "github.com/ev3go/ev3dev/fb"
 	// "math"
 	// "time"
-	"fmt"
+	// "fmt"
 )
 
 type Shifter struct {
@@ -18,7 +18,7 @@ type Shifter struct {
 
 func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftrt int) Shifter {
 	shifter,	_ := ev3dev.TachoMotorFor("ev3-ports:out" + shifterPort, "lego-ev3-m-motor")
-	runner,		_ := ev3dev.TachoMotorFor("ev3-ports:out" + runnerPort, "lego-ev3-m-motor")
+	runner,		_ := ev3dev.TachoMotorFor("ev3-ports:out" + runnerPort, "lego-ev3-l-motor")
 	shifter.SetPosition(0)
 	runner.SetPosition(0)
 	shifterr := Shifter {
@@ -63,11 +63,4 @@ func (s Shifter) RunToAbs(target int, speed int) {
 	s.runnerMotor.SetSpeedSetpoint(speed)
 	s.runnerMotor.SetPositionSetpoint(target).Command("run-to-abs-pos")
 	for state, _ := s.runnerMotor.State(); state != originalState; state, _ = s.runnerMotor.State() {}
-}
-
-func (s Shifter) Await(id int) {
-	select id {
-	case 0:
-		 
-	}
 }

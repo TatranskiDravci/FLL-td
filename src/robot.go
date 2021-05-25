@@ -121,20 +121,6 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 	r.gyroSensor.SetMode("GYRO-ANG")
 }
 
-func (r Robot) ColorPrint() {
-	r.colorSensor.SetMode("RGB-RAW")
-	for true {
-		colorsR, _ := r.colorSensor.Value(0)
-		coloriR, _ := strconv.Atoi(colorsR)
-		colorsG, _ := r.colorSensor.Value(1)
-		coloriG, _ := strconv.Atoi(colorsG)
-		colorsB, _ := r.colorSensor.Value(2)
-		coloriB, _ := strconv.Atoi(colorsB)
-
-		fmt.Println(coloriR, coloriG, coloriB)
-	}
-}
-
 func (r Robot) Follow(speed int, color [3]int, thresh int) {
 	r.colorSensor.SetMode("RGB-RAW")
 	r.cl.SetMode("COL-COLOR")
@@ -209,5 +195,18 @@ func (r Robot) Rotate(angle int, speed int) {
 	time.Sleep(50 * time.Millisecond)
 	r.gyroSensor.SetMode("GYRO-RATE")
 	r.gyroSensor.SetMode("GYRO-ANG")
+}
 
+func (r Robot) ColorCalib(color string) [3]int {
+	r.colorSensor.SetMode("RGB-RAW")
+	fmt.Println(color)
+	var button string
+	fmt.Scanf("%s", &button)
+	colorsR, _ := r.colorSensor.Value(0)
+	R, _ := strconv.Atoi(colorsR)
+	colorsG, _ := r.colorSensor.Value(1)
+	G, _ := strconv.Atoi(colorsG)
+	colorsB, _ := r.colorSensor.Value(2)
+	B, _ := strconv.Atoi(colorsB)
+	return [3]int{R, G, B}
 }
