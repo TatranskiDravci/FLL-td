@@ -1,13 +1,6 @@
 package main
 
-import (
-	// "github.com/ev3go/ev3"
-	"github.com/ev3go/ev3dev"
-	// "github.com/ev3go/ev3dev/fb"
-	// "math"
-	// "time"
-	// "fmt"
-)
+import "github.com/ev3go/ev3dev"
 
 type Shifter struct {
 	shifterMotor	*ev3dev.TachoMotor
