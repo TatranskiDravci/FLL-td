@@ -17,6 +17,10 @@ func InitDropper(shifter Shifter, id int, speed int) Dropper {
 }
 
 func (m Dropper) Release() {
+	m.shifter.AwaitTo()
+	if m.shifter.current != m.id {
+		m.shifter.To(m.id)	
+	}
 	m.shifter.Run(-100, m.speed)
 	time.Sleep(time.Millisecond * 500)
 }

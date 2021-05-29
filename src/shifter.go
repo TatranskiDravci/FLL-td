@@ -15,6 +15,7 @@ type Shifter struct {
 	offset			int
 	rate			int
 	startState		ev3dev.MotorState
+	current			int
 }
 
 func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftrt int) Shifter {
@@ -23,17 +24,18 @@ func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftrt i
 	shifter.SetPosition(0)
 	runner.SetPosition(0)
 	start, _ := shifter.State()
-	shifterr := Shifter {
+	return Shifter {
 		shifterMotor	: shifter,
 		runnerMotor		: runner,
 		offset			: offsetVal,
 		rate			: shiftrt,
 		startState		: start,
+		current			: 0,
 	}
-	return shifterr
 }
 
-func (s Shifter) To(id int) {
+func (s *Shifter) To(id int) {
+	s.current = id
 	originalState, _ := s.shifterMotor.State()
 	s.shifterMotor.SetStopAction("brake")
 	s.shifterMotor.SetSpeedSetpoint(s.rate)
@@ -41,7 +43,8 @@ func (s Shifter) To(id int) {
 	for state, _ := s.shifterMotor.State(); state != originalState; state, _ = s.shifterMotor.State() {}
 }
 
-func (s Shifter) ToAsync(id int) {
+func (s *Shifter) ToAsync(id int) {
+	s.current = id
 	originalState, _ := s.shifterMotor.State()
 	s.shifterMotor.SetStopAction("brake")
 	s.shifterMotor.SetSpeedSetpoint(s.rate)
@@ -61,14 +64,6 @@ func (s Shifter) RunAsync(target int, speed int) {
 	s.runnerMotor.SetStopAction("brake")
 	s.runnerMotor.SetSpeedSetpoint(speed)
 	s.runnerMotor.SetPositionSetpoint(target).Command("run-to-rel-pos")
-}
-
-func (s Shifter) RunToAbs(target int, speed int) {
-	originalState, _ := s.runnerMotor.State()
-	s.runnerMotor.SetStopAction("brake")
-	s.runnerMotor.SetSpeedSetpoint(speed)
-	s.runnerMotor.SetPositionSetpoint(target).Command("run-to-abs-pos")
-	for state, _ := s.runnerMotor.State(); state != originalState; state, _ = s.runnerMotor.State() {}
 }
 
 func (s Shifter) AwaitTo() {

@@ -10,13 +10,6 @@ import (
 	"fmt"
 )
 
-func modV(target int, current int, speed int) int{
-	if current < (target - 10) || current > (target + 10) {
-		return speed
-	}
-	return speed / 2
-}
-
 type Robot struct {
 	leftMotor		*ev3dev.TachoMotor
 	rightMotor		*ev3dev.TachoMotor
@@ -37,7 +30,7 @@ func InitRobot(leftPort, rightPort, gyroPort, colorPort, clPort, crPort string) 
 	time.Sleep(time.Millisecond * 50)
 	gyro.SetMode("GYRO-RATE")
 	gyro.SetMode("GYRO-ANG")
-	robotr := Robot {
+	return Robot {
 		leftMotor	: left,
 		rightMotor	: right,
 		gyroSensor	: gyro,
@@ -45,7 +38,6 @@ func InitRobot(leftPort, rightPort, gyroPort, colorPort, clPort, crPort string) 
 		cl			: cl,
 		cr			: cr,
 	}
-	return robotr
 }
 
 func (r Robot) Steering(speed int, u float64) {
@@ -97,14 +89,14 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 			tCol = tNow
 		}
 
-		if within(coloriR, color[0], thresh) && within(coloriG, color[1], thresh) && within(coloriB, color[2], thresh) {
+		if Within(coloriR, color[0], thresh) && Within(coloriG, color[1], thresh) && Within(coloriB, color[2], thresh) {
 			r.leftMotor.Command("stop")
 			r.rightMotor.Command("stop")
 			break
 		}
 
 		dt := tNow.Sub(tPrev).Seconds()
-		E = E + flinInt(dt, float64(angi), float64(prevAngi))
+		E = E + LinInt(dt, float64(angi), float64(prevAngi))
 		de := (float64(angi) - float64(prevAngi)) / dt
 		u := P*float64(angi) + I*E + D*de
 
@@ -146,7 +138,7 @@ func (r Robot) MoveTillButton(speed int, P float64, I float64, D float64) {
 		angi, _ := strconv.Atoi(angs)
 
 		dt := tNow.Sub(tPrev).Seconds()
-		E = E + flinInt(dt, float64(angi), float64(prevAngi))
+		E = E + LinInt(dt, float64(angi), float64(prevAngi))
 		de := (float64(angi) - float64(prevAngi)) / dt
 		u := P*float64(angi) + I*E + D*de
 
@@ -179,7 +171,7 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 			tPrev = tNow
 		}
 
-		if within(coloriR, color[0], thresh) && within(coloriG, color[1], thresh) && within(coloriB, color[2], thresh) {
+		if Within(coloriR, color[0], thresh) && Within(coloriG, color[1], thresh) && Within(coloriB, color[2], thresh) {
 			r.leftMotor.Command("stop")
 			r.rightMotor.Command("stop")
 			break
@@ -211,7 +203,7 @@ func (r Robot) Rotate(angle int, speed int) {
 	for true {
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
-		speedM := modV(angle, angi, speed)
+		speedM := Modv(angle, angi, speed)
 		if angi > angle {
 			r.rightMotor.SetSpeedSetpoint(speedM).Command("run-forever")
 			r.leftMotor.SetSpeedSetpoint(-speedM).Command("run-forever")
@@ -234,15 +226,24 @@ func (r Robot) Rotate(angle int, speed int) {
 	r.gyroSensor.SetMode("GYRO-ANG")
 }
 
-func (r Robot) ColorCalib(color string) [3]int {
-	r.colorSensor.SetMode("RGB-RAW")
-	fmt.Println(color)
-	AwaitButton()
-	colorsR, _ := r.colorSensor.Value(0)
-	R, _ := strconv.Atoi(colorsR)
-	colorsG, _ := r.colorSensor.Value(1)
-	G, _ := strconv.Atoi(colorsG)
-	colorsB, _ := r.colorSensor.Value(2)
-	B, _ := strconv.Atoi(colorsB)
-	return [3]int{R, G, B}
+func (r Robot) ColorCalib(name string) [3]int {
+	color, ok := GetColor(name)
+	if !ok {
+		r.colorSensor.SetMode("RGB-RAW")
+		fmt.Println(name)
+		AwaitButton()
+
+		colorsR, _ := r.colorSensor.Value(0)
+		colorsG, _ := r.colorSensor.Value(1)
+		colorsB, _ := r.colorSensor.Value(2)
+
+		R, _ := strconv.Atoi(colorsR)
+		G, _ := strconv.Atoi(colorsG)
+		B, _ := strconv.Atoi(colorsB)
+		color = [3]int{R, G, B}
+
+		SetColor(color, name)
+	}
+	return color
 }
+
