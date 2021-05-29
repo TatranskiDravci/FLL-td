@@ -121,6 +121,43 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 	r.gyroSensor.SetMode("GYRO-ANG")
 }
 
+func (r Robot) MoveTillButton(speed int, P float64, I float64, D float64) {
+	fmt.Println("call to Robot/Move")
+	time.Sleep(50 * time.Millisecond)
+	r.gyroSensor.SetMode("GYRO-RATE")
+	r.gyroSensor.SetMode("GYRO-ANG")
+	time.Sleep(time.Millisecond * 50)
+
+	prevAngi := 0
+	tPrev := time.Now()
+	E := float64(0)
+
+	r.leftMotor.SetStopAction("brake")
+	r.rightMotor.SetStopAction("brake")
+
+	r.Steering(speed, 0)
+
+	sig := false
+	go ButtonSig(&sig)
+
+	for !sig {
+		tNow := time.Now()
+		angs, _ := r.gyroSensor.Value(0)
+		angi, _ := strconv.Atoi(angs)
+
+		dt := tNow.Sub(tPrev).Seconds()
+		E = E + flinInt(dt, float64(angi), float64(prevAngi))
+		de := (float64(angi) - float64(prevAngi)) / dt
+		u := P*float64(angi) + I*E + D*de
+
+		r.Steering(speed, u)
+		prevAngi = angi
+		tPrev = tNow
+	}
+	r.leftMotor.Command("stop")
+	r.rightMotor.Command("stop")
+}
+
 func (r Robot) Follow(speed int, color [3]int, thresh int) {
 	r.colorSensor.SetMode("RGB-RAW")
 	r.cl.SetMode("COL-COLOR")
@@ -200,8 +237,7 @@ func (r Robot) Rotate(angle int, speed int) {
 func (r Robot) ColorCalib(color string) [3]int {
 	r.colorSensor.SetMode("RGB-RAW")
 	fmt.Println(color)
-	var button string
-	fmt.Scanf("%s", &button)
+	AwaitButton()
 	colorsR, _ := r.colorSensor.Value(0)
 	R, _ := strconv.Atoi(colorsR)
 	colorsG, _ := r.colorSensor.Value(1)

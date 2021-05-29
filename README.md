@@ -12,7 +12,7 @@ A (hopefully) successful successor to FLL-evicka. Written in golang
 ├── Makefile
 └── src
     ├── run_X.go			--> RG run code
-    ├── fmath.go			--> mainly mathematical functions
+    ├── exten.go			--> math & miscelaneous functions
     ├── modules.go			--> code for modules on robot
     ├── robot.go			--> movement code
     └── shifter.go			--> code for shifter
@@ -21,7 +21,7 @@ A (hopefully) successful successor to FLL-evicka. Written in golang
 ## Makefile Structure
 ```make
 PLATFORM = GOOS=linux GOARCH=arm GOARM=5
-LIB = src/fmath.go src/robot.go src/modules.go src/shifter.go
+LIB = src/exten.go src/robot.go src/modules.go src/shifter.go
 
 foo:
     bar

@@ -1,20 +1,20 @@
 package main
 
-import (
-	"fmt"
+const (
+	T = 20
+	P = 28
+	I = 10
 )
 
 func main() {
-	// r := InitRobot("A", "D", "2", "4", "1", "3")
-	s := InitShifter("B", "C", -1800, 550)
-	// pink := r.ColorCalib("pink")
-	// black := r.ColorCalib("black")
+	r := InitRobot("A", "D", "2", "4", "1", "3")
+	pink := r.ColorCalib("")
 
-	for i := 0; i < 5; i++ {
-		s.To(i)
-		s.Run(520, 400)
-		var button string
-		fmt.Scanf("%s", &button)
+	AwaitButton()
+	for d := 0; d <= 6; d++ {
+		for i := 0; i < 3; i++ {
+			r.Move(400, pink, T, P, I, float64(d))
+			AwaitButton()
+		}
 	}
-	s.To(0)
 }
