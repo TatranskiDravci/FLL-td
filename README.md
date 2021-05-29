@@ -12,7 +12,7 @@ A (hopefully) successful successor to FLL-evicka. Written in golang
 ├── Makefile
 └── src
     ├── run_X.go			--> RG run code
-    ├── env.go              --> interaction with environment variables
+    ├── env.go				--> interaction with environment variables
     ├── exten.go			--> math & miscelaneous functions
     ├── modules.go			--> code for modules on robot
     ├── robot.go			--> movement code
