@@ -12,17 +12,17 @@ type Robot struct {
 	leftMotor		*ev3dev.TachoMotor
 	rightMotor		*ev3dev.TachoMotor
 	gyroSensor		*ev3dev.Sensor
-	colorSensor		*ev3dev.Sensor
-	cl				*ev3dev.Sensor
-	cr				*ev3dev.Sensor
+	colorLeft		*ev3dev.Sensor
+	colorMid		*ev3dev.Sensor
+	colorRight		*ev3dev.Sensor
 }
 
-func InitRobot(leftPort, rightPort, gyroPort, colorPort, clPort, crPort string) Robot {
+func InitRobot(leftPort, rightPort, gyroPort, clPort, cmPort, crPort string) Robot {
 	left,	_	:= ev3dev.TachoMotorFor("ev3-ports:out" + leftPort, "lego-ev3-l-motor")
 	right,	_	:= ev3dev.TachoMotorFor("ev3-ports:out" + rightPort, "lego-ev3-l-motor")
 	gyro,	_	:= ev3dev.SensorFor("ev3-ports:in" + gyroPort, "lego-ev3-gyro")
-	color,	_	:= ev3dev.SensorFor("ev3-ports:in" + colorPort, "lego-ev3-color")
-	cl,		_	:= ev3dev.SensorFor("ev3-ports:in" + clPort, "lego-ev3-color")
+	cl,	_	:= ev3dev.SensorFor("ev3-ports:in" + clPort, "lego-ev3-color")
+	cm,		_	:= ev3dev.SensorFor("ev3-ports:in" + cmPort, "lego-ev3-color")
 	cr,		_	:= ev3dev.SensorFor("ev3-ports:in" + crPort, "lego-ev3-color")
 
 	time.Sleep(time.Millisecond * 50)
@@ -32,9 +32,9 @@ func InitRobot(leftPort, rightPort, gyroPort, colorPort, clPort, crPort string) 
 		leftMotor	: left,
 		rightMotor	: right,
 		gyroSensor	: gyro,
-		colorSensor : color,
-		cl			: cl,
-		cr			: cr,
+		colorLeft	: cl,
+		colorMid	: cm,
+		colorRight	: cr,
 	}
 }
 
@@ -54,7 +54,7 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 	time.Sleep(50 * time.Millisecond)
 	r.gyroSensor.SetMode("GYRO-RATE")
 	r.gyroSensor.SetMode("GYRO-ANG")
-	r.colorSensor.SetMode("RAW-RGB")
+	r.colorLeft.SetMode("RAW-RGB")
 	time.Sleep(time.Millisecond * 50)
 
 	prevAngi := 0
@@ -78,11 +78,11 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 		angi, _ := strconv.Atoi(angs)
 
 		if tNow.Sub(tCol).Milliseconds() >= 150 {
-			colorsR, _ := r.colorSensor.Value(0)
+			colorsR, _ := r.colorLeft.Value(0)
 			coloriR, _ = strconv.Atoi(colorsR)
-			colorsG, _ := r.colorSensor.Value(1)
+			colorsG, _ := r.colorLeft.Value(1)
 			coloriG, _ = strconv.Atoi(colorsG)
-			colorsB, _ := r.colorSensor.Value(2)
+			colorsB, _ := r.colorLeft.Value(2)
 			coloriB, _ = strconv.Atoi(colorsB)
 			tCol = tNow
 		}
@@ -149,9 +149,9 @@ func (r Robot) MoveTillButton(speed int, P float64, I float64, D float64) {
 }
 
 func (r Robot) Follow(speed int, color [3]int, thresh int) {
-	r.colorSensor.SetMode("RGB-RAW")
-	r.cl.SetMode("COL-COLOR")
-	r.cr.SetMode("COL-COLOR")
+	r.colorLeft.SetMode("RGB-RAW")
+	r.colorMid.SetMode("COL-COLOR")
+	r.colorRight.SetMode("COL-COLOR")
 
 	coloriR := 0
 	coloriG := 0
@@ -160,11 +160,11 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 	for true {
 		tNow := time.Now()
 		if tNow.Sub(tPrev).Milliseconds() >= 150 {
-			colorsR, _ := r.colorSensor.Value(0)
+			colorsR, _ := r.colorLeft.Value(0)
 			coloriR, _ = strconv.Atoi(colorsR)
-			colorsG, _ := r.colorSensor.Value(1)
+			colorsG, _ := r.colorLeft.Value(1)
 			coloriG, _ = strconv.Atoi(colorsG)
-			colorsB, _ := r.colorSensor.Value(2)
+			colorsB, _ := r.colorLeft.Value(2)
 			coloriB, _ = strconv.Atoi(colorsB)
 			tPrev = tNow
 		}
@@ -175,9 +175,8 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 			break
 		}
 
-		lcs, _ := r.cl.Value(0)
-		rcs, _ := r.cr.Value(0)
-		
+		lcs, _ := r.colorMid.Value(0)
+		rcs, _ := r.colorRight.Value(0)
 		lci, _ := strconv.Atoi(lcs)
 		rci, _ := strconv.Atoi(rcs)
 
@@ -227,13 +226,13 @@ func (r Robot) Rotate(angle int, speed int) {
 func (r Robot) ColorCalib(name string) [3]int {
 	color, ok := GetColor(name)
 	if !ok {
-		r.colorSensor.SetMode("RGB-RAW")
+		r.colorLeft.SetMode("RGB-RAW")
 		fmt.Println(name)
 		AwaitButton()
 
-		colorsR, _ := r.colorSensor.Value(0)
-		colorsG, _ := r.colorSensor.Value(1)
-		colorsB, _ := r.colorSensor.Value(2)
+		colorsR, _ := r.colorLeft.Value(0)
+		colorsG, _ := r.colorLeft.Value(1)
+		colorsB, _ := r.colorLeft.Value(2)
 
 		R, _ := strconv.Atoi(colorsR)
 		G, _ := strconv.Atoi(colorsG)
