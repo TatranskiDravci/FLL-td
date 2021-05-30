@@ -51,16 +51,16 @@ func (r Robot) Steering(speed int, u float64) {
 
 func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D float64) {
 	fmt.Println("call to Robot/Move")
-	time.Sleep(50 * time.Millisecond)
+
+	time.Sleep(time.Millisecond * 50)
 	r.gyroSensor.SetMode("GYRO-RATE")
 	r.gyroSensor.SetMode("GYRO-ANG")
 	r.colorLeft.SetMode("RAW-RGB")
-	time.Sleep(time.Millisecond * 50)
 
-	prevAngi := 0
-	tPrev := time.Now()
-	tCol := time.Now()
-	tStart := time.Now()
+	angiPrev := 0
+	timeStart := time.Now()
+	timePrev := time.Now()
+	timeColor := time.Now()
 	E := float64(0)
 
 	coloriR := 0
@@ -73,18 +73,18 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 	r.Steering(speed, 0)
 
 	for true {
-		tNow := time.Now()
+		timeNow := time.Now()
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
 
-		if tNow.Sub(tCol).Milliseconds() >= 150 {
+		if timeNow.Sub(timeColor).Milliseconds() >= 150 {
 			colorsR, _ := r.colorLeft.Value(0)
 			coloriR, _ = strconv.Atoi(colorsR)
 			colorsG, _ := r.colorLeft.Value(1)
 			coloriG, _ = strconv.Atoi(colorsG)
 			colorsB, _ := r.colorLeft.Value(2)
 			coloriB, _ = strconv.Atoi(colorsB)
-			tCol = tNow
+			timeColor = timeNow
 		}
 
 		if Within(coloriR, color[0], thresh) && Within(coloriG, color[1], thresh) && Within(coloriB, color[2], thresh) {
@@ -93,16 +93,16 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 			break
 		}
 
-		dt := tNow.Sub(tPrev).Seconds()
-		E = E + LinInt(dt, float64(angi), float64(prevAngi))
-		de := (float64(angi) - float64(prevAngi)) / dt
+		dt := timeNow.Sub(timePrev).Seconds()
+		E = E + LinInt(dt, float64(angi), float64(angiPrev))
+		de := (float64(angi) - float64(angiPrev)) / dt
 		u := P*float64(angi) + I*E + D*de
 
-		fmt.Println(time.Now().Sub(tStart).Seconds(), angi, u, P*float64(angi), I*E, D*de)
+		fmt.Println(timeNow.Sub(timeStart).Seconds(), angi, u, P*float64(angi), I*E, D*de)
 
 		r.Steering(speed, u)
-		prevAngi = angi
-		tPrev = tNow
+		angiPrev = angi
+		timePrev = timeNow
 	}
 
 	r.Rotate(0, 100)
@@ -112,14 +112,13 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 }
 
 func (r Robot) MoveTillButton(speed int, P float64, I float64, D float64) {
-	fmt.Println("call to Robot/Move")
 	time.Sleep(50 * time.Millisecond)
 	r.gyroSensor.SetMode("GYRO-RATE")
 	r.gyroSensor.SetMode("GYRO-ANG")
 	time.Sleep(time.Millisecond * 50)
 
-	prevAngi := 0
-	tPrev := time.Now()
+	angiPrev := 0
+	timePrev := time.Now()
 	E := float64(0)
 
 	r.leftMotor.SetStopAction("brake")
@@ -131,18 +130,18 @@ func (r Robot) MoveTillButton(speed int, P float64, I float64, D float64) {
 	go ButtonSig(&sig)
 
 	for !sig {
-		tNow := time.Now()
+		timeNow := time.Now()
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
 
-		dt := tNow.Sub(tPrev).Seconds()
-		E = E + LinInt(dt, float64(angi), float64(prevAngi))
-		de := (float64(angi) - float64(prevAngi)) / dt
+		dt := timeNow.Sub(timePrev).Seconds()
+		E = E + LinInt(dt, float64(angi), float64(angiPrev))
+		de := (float64(angi) - float64(angiPrev)) / dt
 		u := P*float64(angi) + I*E + D*de
 
 		r.Steering(speed, u)
-		prevAngi = angi
-		tPrev = tNow
+		angiPrev = angi
+		timePrev = timeNow
 	}
 	r.leftMotor.Command("stop")
 	r.rightMotor.Command("stop")
@@ -200,7 +199,7 @@ func (r Robot) Rotate(angle int, speed int) {
 	for true {
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
-		speedM := Modv(angle, angi, speed)
+		speedM := ModSpeed(angle, angi, speed)
 		if angi > angle {
 			r.rightMotor.SetSpeedSetpoint(speedM).Command("run-forever")
 			r.leftMotor.SetSpeedSetpoint(-speedM).Command("run-forever")

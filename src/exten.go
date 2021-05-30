@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func LinInt(dx, y2, y1 float64) float64 {
 	return 0.5*dx*(y2 + y1)
@@ -22,9 +25,12 @@ func ButtonSig(sig *bool) {
 	*sig = true 
 }
 
-func Modv(target int, current int, speed int) int{
-	if current < (target - 10) || current > (target + 10) {
-		return speed
-	}
-	return speed / 2
+func ModSpeed(target, current, minSpeed, maxSpeed float64) int{
+	targetAbs := math.Abs(target)
+	currentAbs := math.Abs(current)
+
+	base := math.Pow(maxSpeed - minSpeed, 1 / targetAbs)
+	shift := math.Log(maxSpeed - minSpeed) / math.Log(base) 
+
+	return int(math.Pow(base, shift - target) + minSpeed)
 }
