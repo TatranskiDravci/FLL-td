@@ -29,7 +29,7 @@ func ModSpeed(target, current, minSpeed, maxSpeed float64) int{
 	targetAbs := math.Abs(target)
 	currentAbs := math.Abs(current)
 
-	base := math.Pow(maxSpeed - minSpeed, 1 / targetAbs)
+	base := math.Pow(5*(maxSpeed - minSpeed), 1 / targetAbs)
 	shift := math.Log(maxSpeed - minSpeed) / math.Log(base) 
 
 	return int(math.Pow(base, shift - target) + minSpeed)
