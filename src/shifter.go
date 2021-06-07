@@ -11,7 +11,7 @@ type Shifter struct {
 	current			int
 }
 
-func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftrt int) Shifter {
+func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftRate int) Shifter {
 	shifter,	_ := ev3dev.TachoMotorFor("ev3-ports:out" + shifterPort, "lego-ev3-m-motor")
 	runner,		_ := ev3dev.TachoMotorFor("ev3-ports:out" + runnerPort, "lego-ev3-l-motor")
 	shifter.SetPosition(0)
@@ -21,7 +21,7 @@ func InitShifter(shifterPort string, runnerPort string, offsetVal int, shiftrt i
 		shifterMotor	: shifter,
 		runnerMotor		: runner,
 		offset			: offsetVal,
-		rate			: shiftrt,
+		rate			: shiftRate,
 		startState		: start,
 		current			: 0,
 	}
@@ -38,11 +38,9 @@ func (s *Shifter) To(id int) {
 
 func (s *Shifter) ToAsync(id int) {
 	s.current = id
-	originalState, _ := s.shifterMotor.State()
 	s.shifterMotor.SetStopAction("brake")
 	s.shifterMotor.SetSpeedSetpoint(s.rate)
 	s.shifterMotor.SetPositionSetpoint(id*s.offset).Command("run-to-abs-pos")
-	for state, _ := s.shifterMotor.State(); state != originalState; state, _ = s.shifterMotor.State() {}
 }
 
 func (s Shifter) Run(target int, speed int) {

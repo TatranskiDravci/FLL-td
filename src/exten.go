@@ -2,8 +2,14 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
+
+func Abs(x float64) float64 {
+	if x < 0 {
+		return -1*x
+	}
+	return x
+}
 
 func LinInt(dx, y2, y1 float64) float64 {
 	return 0.5*dx*(y2 + y1)
@@ -26,11 +32,10 @@ func ButtonSig(sig *bool) {
 }
 
 func ModSpeed(target, current, minSpeed, maxSpeed float64) int{
-	targetAbs := math.Abs(target)
-	currentAbs := math.Abs(current)
+	targetAbs := Abs(target)
+	currentAbs := Abs(current)
 
-	base := math.Pow(5*(maxSpeed - minSpeed), 1 / targetAbs)
-	shift := math.Log(maxSpeed - minSpeed) / math.Log(base) 
-
-	return int(math.Pow(base, shift - target) + minSpeed)
+	a := -((minSpeed - maxSpeed) / (targetAbs*targetAbs))
+	b := -2*a*targetAbs
+	return int(a*currentAbs*currentAbs + b*currentAbs + maxSpeed)
 }

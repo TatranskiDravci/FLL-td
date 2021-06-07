@@ -3,7 +3,7 @@ package main
 const (
 	P = float64(28)
 	I = float64(10)
-	D = float64(0)
+	D = float64(2)
 	T = 20
 )
 
@@ -16,8 +16,9 @@ func main() {
 		AwaitButton()
 
 		s.ToAsync(d.id)
-		r.Move(400, green, T, P, I, D)
+		r.Move(200, green, T, P, I, D)
 		d.Release()
-		r.MoveTillButton(-400, P, I, D)
-		s.To(0)
+		s.ToAsync(0)
+		r.MoveTillButton(-500, P, I, D)
+		s.AwaitTo()
 }

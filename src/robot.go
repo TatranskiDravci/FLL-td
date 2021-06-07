@@ -51,16 +51,17 @@ func (r Robot) Steering(speed int, u float64) {
 
 func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D float64) {
 	fmt.Println("call to Robot/Move")
-
-	time.Sleep(time.Millisecond * 50)
+	time.Sleep(time.Millisecond * 25)
 	r.gyroSensor.SetMode("GYRO-RATE")
+	r.colorLeft.SetMode("RGB-RAW")
+	time.Sleep(time.Millisecond * 25)
 	r.gyroSensor.SetMode("GYRO-ANG")
-	r.colorLeft.SetMode("RAW-RGB")
+	time.Sleep(time.Millisecond * 25)
+	r.gyroSensor.SetMode("GYRO-ANG")
 
 	angiPrev := 0
 	timeStart := time.Now()
 	timePrev := time.Now()
-	timeColor := time.Now()
 	E := float64(0)
 
 	coloriR := 0
@@ -77,15 +78,12 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
 
-		if timeNow.Sub(timeColor).Milliseconds() >= 150 {
-			colorsR, _ := r.colorLeft.Value(0)
-			coloriR, _ = strconv.Atoi(colorsR)
-			colorsG, _ := r.colorLeft.Value(1)
-			coloriG, _ = strconv.Atoi(colorsG)
-			colorsB, _ := r.colorLeft.Value(2)
-			coloriB, _ = strconv.Atoi(colorsB)
-			timeColor = timeNow
-		}
+		colorsR, _ := r.colorLeft.Value(0)
+		coloriR, _ = strconv.Atoi(colorsR)
+		colorsG, _ := r.colorLeft.Value(1)
+		coloriG, _ = strconv.Atoi(colorsG)
+		colorsB, _ := r.colorLeft.Value(2)
+		coloriB, _ = strconv.Atoi(colorsB)
 
 		if Within(coloriR, color[0], thresh) && Within(coloriG, color[1], thresh) && Within(coloriB, color[2], thresh) {
 			r.leftMotor.Command("stop")
@@ -105,17 +103,20 @@ func (r Robot) Move(speed int, color [3]int, thresh int, P float64, I float64, D
 		timePrev = timeNow
 	}
 
-	r.Rotate(0, 100)
-	time.Sleep(time.Millisecond * 50)
-	r.gyroSensor.SetMode("GYRO-RATE")
-	r.gyroSensor.SetMode("GYRO-ANG")
+	angs, _ := r.gyroSensor.Value(0)
+	angi, _ := strconv.Atoi(angs)
+	if angi != 0 {
+		r.Rotate(-angi, 60)
+	}
 }
 
 func (r Robot) MoveTillButton(speed int, P float64, I float64, D float64) {
-	time.Sleep(50 * time.Millisecond)
+	time.Sleep(time.Millisecond * 25)
 	r.gyroSensor.SetMode("GYRO-RATE")
+	time.Sleep(time.Millisecond * 25)
 	r.gyroSensor.SetMode("GYRO-ANG")
-	time.Sleep(time.Millisecond * 50)
+	time.Sleep(time.Millisecond * 25)
+	r.gyroSensor.SetMode("GYRO-ANG")
 
 	angiPrev := 0
 	timePrev := time.Now()
@@ -155,18 +156,15 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 	coloriR := 0
 	coloriG := 0
 	coloriB := 0
-	tPrev := time.Now()
+
 	for true {
-		tNow := time.Now()
-		if tNow.Sub(tPrev).Milliseconds() >= 150 {
-			colorsR, _ := r.colorLeft.Value(0)
-			coloriR, _ = strconv.Atoi(colorsR)
-			colorsG, _ := r.colorLeft.Value(1)
-			coloriG, _ = strconv.Atoi(colorsG)
-			colorsB, _ := r.colorLeft.Value(2)
-			coloriB, _ = strconv.Atoi(colorsB)
-			tPrev = tNow
-		}
+		colorsR, _ := r.colorLeft.Value(0)
+		coloriR, _ = strconv.Atoi(colorsR)
+		colorsG, _ := r.colorLeft.Value(1)
+		coloriG, _ = strconv.Atoi(colorsG)
+		colorsB, _ := r.colorLeft.Value(2)
+		coloriB, _ = strconv.Atoi(colorsB)
+
 
 		if Within(coloriR, color[0], thresh) && Within(coloriG, color[1], thresh) && Within(coloriB, color[2], thresh) {
 			r.leftMotor.Command("stop")
@@ -180,11 +178,21 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 		rci, _ := strconv.Atoi(rcs)
 
 		if lci == 1 && rci != 1 {
-			r.rightMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
-			r.leftMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+			if speed >= 0 {
+				r.rightMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+			} else {
+				r.rightMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+			}
 		} else if lci != 1 && rci == 1 {
-			r.rightMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
-			r.leftMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+			if speed >= 0 {
+				r.rightMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+			} else {
+				r.rightMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+			}
 		} else {
 			r.rightMotor.SetSpeedSetpoint(speed).Command("run-forever")
 			r.leftMotor.SetSpeedSetpoint(speed).Command("run-forever")
@@ -194,12 +202,22 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 }
 
 func (r Robot) Rotate(angle int, speed int) {
+	time.Sleep(time.Millisecond * 25)
+	r.gyroSensor.SetMode("GYRO-RATE")
+	time.Sleep(time.Millisecond * 25)
+	r.gyroSensor.SetMode("GYRO-ANG")
+	time.Sleep(time.Millisecond * 25)
+	r.gyroSensor.SetMode("GYRO-ANG")
+	
+
 	r.leftMotor.SetStopAction("brake")
 	r.rightMotor.SetStopAction("brake")
+	minSpeed := float64(50)
+	maxSpeed := float64(speed)
 	for true {
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
-		speedM := ModSpeed(angle, angi, speed)
+		speedM := ModSpeed(float64(angle), float64(angi), minSpeed, maxSpeed)
 		if angi > angle {
 			r.rightMotor.SetSpeedSetpoint(speedM).Command("run-forever")
 			r.leftMotor.SetSpeedSetpoint(-speedM).Command("run-forever")
@@ -217,7 +235,6 @@ func (r Robot) Rotate(angle int, speed int) {
 			}
 		}
 	}
-	time.Sleep(50 * time.Millisecond)
 	r.gyroSensor.SetMode("GYRO-RATE")
 	r.gyroSensor.SetMode("GYRO-ANG")
 }
@@ -243,3 +260,15 @@ func (r Robot) ColorCalib(name string) [3]int {
 	return color
 }
 
+func (r Robot) Run(speed, target int) {
+	originalState, _ := r.leftMotor.State()
+	r.leftMotor.SetStopAction("brake")
+	r.leftMotor.SetSpeedSetpoint(speed)
+	r.leftMotor.SetPositionSetpoint(target).Command("run-to-rel-pos")
+
+	r.rightMotor.SetStopAction("brake")
+	r.rightMotor.SetSpeedSetpoint(speed)
+	r.rightMotor.SetPositionSetpoint(target).Command("run-to-rel-pos")
+
+	for state, _ := r.leftMotor.State(); state != originalState; state, _ = r.leftMotor.State() {}
+}
