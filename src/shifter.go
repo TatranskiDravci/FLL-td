@@ -58,7 +58,7 @@ func (s Shifter) RunAsync(target int, speed int) {
 }
 
 func (s Shifter) AwaitTo() {
-	for state, _ := s.shifterMotor.State(); state != s.startState; state, _ = s.runnerMotor.State() {}
+	for state, _ := s.shifterMotor.State(); state != s.startState; state, _ = s.shifterMotor.State() {}
 }
 
 func (s Shifter) AwaitRun() {

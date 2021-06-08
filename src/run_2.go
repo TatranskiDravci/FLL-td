@@ -66,7 +66,7 @@ func main() {
 		r.Follow(300, pink, T)
 		r.Follow(200, black, T)
 		c.To(-700, 600)
-		c.To(700, 600)
+		c.To(900, 600)
 		s.ToAsync(i.id)
 		angs, _ := r.gyroSensor.Value(0)
 		angi, _ := strconv.Atoi(angs)
@@ -84,5 +84,5 @@ func main() {
 		r.Move(-200, grey, T, P, I, D)
 		r.Rotate(-30, 200)
 		r.MoveTillButton(-250, P, I, D)
-		s.AwaitTo()
+		l.AwaitTo()
 }

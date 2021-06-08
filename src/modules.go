@@ -52,6 +52,20 @@ func (m *Lifter) To(target int) {
 	m.absPercent = target
 }
 
+func (m *Lifter) ToAsync(target int) {
+	m.shifter.AwaitTo()
+	if m.shifter.current != m.id {
+		m.shifter.To(m.id)
+	}
+	dPercent := target - m.absPercent
+	m.absPercent = target
+	m.shifter.RunAsync(-57 * dPercent, m.speed)
+}
+
+func (m Lifter) AwaitTo() {
+	m.shifter.AwaitRun()
+}
+
 type Column struct {
 	shifter		Shifter
 	id			int
@@ -95,37 +109,5 @@ func (m Slide) Unlock() {
 		m.shifter.To(m.id)
 	}
 	m.shifter.Run(-100, m.speed)
-	time.Sleep(time.Millisecond * 250)
-}
-
-type Euler struct {
-	shifter		Shifter
-	id			int
-	speed		int
-}
-
-func InitEuler(shifter Shifter, id int, speed int) Euler {
-	return Euler {
-		shifter : shifter,
-		id : id,
-		speed : speed,
-	}
-}
-
-func (m Euler) Down() {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	m.shifter.Run(1400, m.speed)
-	time.Sleep(time.Millisecond * 250)
-}
-
-func (m Euler) Up() {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	m.shifter.Run(-1400, m.speed)
 	time.Sleep(time.Millisecond * 250)
 }

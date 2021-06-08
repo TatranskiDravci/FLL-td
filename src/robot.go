@@ -201,6 +201,59 @@ func (r Robot) Follow(speed int, color [3]int, thresh int) {
 	}
 }
 
+func (r Robot) FollowUntilNot(speed int, color [3]int, thresh int) {
+	r.colorLeft.SetMode("RGB-RAW")
+	r.colorMid.SetMode("COL-COLOR")
+	r.colorRight.SetMode("COL-COLOR")
+
+	coloriR := 0
+	coloriG := 0
+	coloriB := 0
+
+	for true {
+		colorsR, _ := r.colorLeft.Value(0)
+		coloriR, _ = strconv.Atoi(colorsR)
+		colorsG, _ := r.colorLeft.Value(1)
+		coloriG, _ = strconv.Atoi(colorsG)
+		colorsB, _ := r.colorLeft.Value(2)
+		coloriB, _ = strconv.Atoi(colorsB)
+
+
+		if !Within(coloriR, color[0], thresh) || !Within(coloriG, color[1], thresh) || !Within(coloriB, color[2], thresh) {
+			r.leftMotor.Command("stop")
+			r.rightMotor.Command("stop")
+			break
+		}
+
+		lcs, _ := r.colorMid.Value(0)
+		rcs, _ := r.colorRight.Value(0)
+		lci, _ := strconv.Atoi(lcs)
+		rci, _ := strconv.Atoi(rcs)
+
+		if lci == 1 && rci != 1 {
+			if speed >= 0 {
+				r.rightMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+			} else {
+				r.rightMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+			}
+		} else if lci != 1 && rci == 1 {
+			if speed >= 0 {
+				r.rightMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+			} else {
+				r.rightMotor.SetSpeedSetpoint(int(1.25*float64(speed))).Command("run-forever")
+				r.leftMotor.SetSpeedSetpoint(int(0.75*float64(speed))).Command("run-forever")
+			}
+		} else {
+			r.rightMotor.SetSpeedSetpoint(speed).Command("run-forever")
+			r.leftMotor.SetSpeedSetpoint(speed).Command("run-forever")
+		}
+
+	}
+}
+
 func (r Robot) Rotate(angle int, speed int) {
 	time.Sleep(time.Millisecond * 25)
 	r.gyroSensor.SetMode("GYRO-RATE")
