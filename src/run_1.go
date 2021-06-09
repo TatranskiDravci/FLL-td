@@ -1,8 +1,8 @@
 package main
 
 const (
-	P = float64(28)
-	I = float64(10)
+	P = float64(26)
+	I = float64(8)
 	D = float64(0)
 	T = 20
 )
@@ -12,7 +12,7 @@ func main() {
 		s := InitShifter("B", "C", -1910, 800)
 		d := InitDropper(s, 1, 500)
 
-		green := r.ColorCalib("GREEN")
+		green := r.ColorCalib("SGREEN")
 		AwaitButton()
 
 		s.ToAsync(d.id)

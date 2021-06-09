@@ -15,6 +15,7 @@ type Robot struct {
 	colorLeft		*ev3dev.Sensor
 	colorMid		*ev3dev.Sensor
 	colorRight		*ev3dev.Sensor
+	angle			int
 }
 
 func InitRobot(leftPort, rightPort, gyroPort, clPort, cmPort, crPort string) Robot {
@@ -35,6 +36,7 @@ func InitRobot(leftPort, rightPort, gyroPort, clPort, cmPort, crPort string) Rob
 		colorLeft	: cl,
 		colorMid	: cm,
 		colorRight	: cr,
+		angle : 0,
 	}
 }
 
