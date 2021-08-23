@@ -32,8 +32,7 @@ func (s *Shifter) To(id int) {
 	s.shifterMotor.SetStopAction("brake")
 	s.shifterMotor.SetSpeedSetpoint(s.rate)
 	s.shifterMotor.SetPositionSetpoint(id * s.offset).Command("run-to-abs-pos")
-	for state, _ := s.shifterMotor.State(); state != s.startState; state, _ = s.shifterMotor.State() {
-	}
+	for state, _ := s.shifterMotor.State(); state != s.startState; state, _ = s.shifterMotor.State() {}
 }
 
 func (s *Shifter) ToAsync(id int) {
@@ -47,8 +46,7 @@ func (s Shifter) Run(target int, speed int) {
 	s.runnerMotor.SetStopAction("brake")
 	s.runnerMotor.SetSpeedSetpoint(speed)
 	s.runnerMotor.SetPositionSetpoint(target).Command("run-to-rel-pos")
-	for state, _ := s.runnerMotor.State(); state != s.startState; state, _ = s.runnerMotor.State() {
-	}
+	for state, _ := s.runnerMotor.State(); state != s.startState; state, _ = s.runnerMotor.State() {}
 }
 
 func (s Shifter) RunAsync(target int, speed int) {
@@ -58,11 +56,9 @@ func (s Shifter) RunAsync(target int, speed int) {
 }
 
 func (s Shifter) AwaitTo() {
-	for state, _ := s.shifterMotor.State(); state != s.startState; state, _ = s.shifterMotor.State() {
-	}
+	for state, _ := s.shifterMotor.State(); state != s.startState; state, _ = s.shifterMotor.State() {}
 }
 
 func (s Shifter) AwaitRun() {
-	for state, _ := s.runnerMotor.State(); state != s.startState; state, _ = s.runnerMotor.State() {
-	}
+	for state, _ := s.runnerMotor.State(); state != s.startState; state, _ = s.runnerMotor.State() {}
 }
