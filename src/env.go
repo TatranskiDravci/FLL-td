@@ -1,15 +1,14 @@
 package main
 
 import (
-	"os"
 	"io/ioutil"
 	"io/fs"
 	"strconv"
 	"fmt"
 )
 
-func RequestValue(key string) (string, bool) {
-	data, err := ioutil.ReadFile("../data/env")
+func RequestValue(key string, fname string) (string, bool) {
+	data, err := ioutil.ReadFile("../data/" + fname)
 	keyRead := ""
 	valueRead := ""
 	keyNow := true
@@ -42,58 +41,65 @@ func RequestValue(key string) (string, bool) {
 	return "", false
 }
 
-func ClearKeys() {
-	ioutil.WriteFile("../data/env", []byte(""), fs.ModePerm)
+func ClearKeys(fname string) {
+	ioutil.WriteFile("../data/" + fname, []byte(""), fs.ModePerm)
 }
 
-func SetColor(color [3]int, name string) {
-	R := strconv.Itoa(color[0])
-	G := strconv.Itoa(color[1])
-	B := strconv.Itoa(color[2])
-	nameR := name + "R"
-	nameG := name + "G"
-	nameB := name + "B"
-
-	vars := nameR + "=" + R + "\n" + nameG + "=" + G + "\n" + nameB + "=" + B + "\n"
-
-	data, err := ioutil.ReadFile("../data/env")
-	datas := string(data)
-	if err != nil {
-		os.Create("../data/env")
-	}
-
-	ioutil.WriteFile("../data/env", []byte(vars + datas), fs.ModePerm)
+func ClearAll() {
+	ClearKeys("col")
+	ClearKeys("err")
 }
 
-func GetColor(name string) ([3]int, bool) {
-	nameR := name + "R"
-	nameG := name + "G"
-	nameB := name + "B"
-	var R, G, B int
+func SetProfile(k [3]float64, l [3]int, id string) {
+	varsK := "kR=" + fmt.Sprintf("%f", k[0]) + "\nkG=" + fmt.Sprintf("%f", k[1]) + "\nkB=" + fmt.Sprintf("%f", k[2]) + "\n"
+	varsL := "lR=" + strconv.Itoa(l[0]) + "\nlG=" + strconv.Itoa(l[1]) + "\nlB=" + strconv.Itoa(l[2]) + "\n"
 
-	Rs, okR := RequestValue(nameR)
-	if !okR {
-		fmt.Println("COLOR NOT SET")
-		return [3]int{-1, -1, -1}, okR
-	} else {
-		R, _ = strconv.Atoi(Rs)
-	}
+	vars := varsK + varsL
+	ioutil.WriteFile("../data/prof" + id, []byte(vars), fs.ModePerm)
+}
 
-	Gs, okG := RequestValue(nameG)
-	if !okG {
-		fmt.Println("COLOR NOT SET")
-		return [3]int{-1, -1, -1}, okG
-	} else {
-		G, _ = strconv.Atoi(Gs)
-	}
+func GetColor(name, fname string) ([3]int, bool) {
+	r, ok := RequestValue(name + "R", fname)
+	if !ok { return [3]int{-1, -1, -1}, ok }
+	R, _ := strconv.Atoi(r)
 
-	Bs, okB := RequestValue(nameB)
-	if !okB {
-		fmt.Println("COLOR NOT SET")
-		return [3]int{-1, -1, -1}, okB
-	} else {
-		B, _ = strconv.Atoi(Bs)
-	}
+	g, ok := RequestValue(name + "G", fname)
+	if !ok { return [3]int{-1, -1, -1}, ok }
+	G, _ := strconv.Atoi(g)
+
+	b, ok := RequestValue(name + "B", fname)
+	if !ok { return [3]int{-1, -1, -1}, ok }
+	B, _ := strconv.Atoi(b)
 
 	return [3]int{R, G, B}, true
+}
+
+func GetColorf(name, fname string) ([3]float64, bool) {
+	r, ok := RequestValue(name + "R", fname)
+	if !ok { return [3]float64{-1., -1., -1.}, ok }
+	R, _ := strconv.ParseFloat(r, 64)
+
+	g, ok := RequestValue(name + "G", fname)
+	if !ok { return [3]float64{-1., -1., -1.}, ok }
+	G, _ := strconv.ParseFloat(g, 64)
+
+	b, ok := RequestValue(name + "B", fname)
+	if !ok { return [3]float64{-1., -1., -1.}, ok }
+	B, _ := strconv.ParseFloat(b, 64)
+
+	return [3]float64{R, G, B}, true
+}
+
+func GetColor2(name string) ([2][3]int, bool) {
+	col, ok1 := GetColor(name, "col")
+	err, ok2 := GetColor(name, "err")
+
+	return [2][3]int{col, err}, ok1 && ok2
+}
+
+func GetProfile(id string) ([3]float64, [3]int, bool) {
+	k, ok1 := GetColorf("k", "prof" + id)
+	l, ok2 :=  GetColor("l", "prof" + id)
+
+	return k, l, ok1 && ok2
 }

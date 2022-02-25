@@ -1,113 +1,111 @@
 package main
 
-import "time"
+/*
+    TODO:
+        [ ] implement modules (OOP)
 
-type Dropper struct {
-	shifter 	Shifter
-	id			int
-	speed		int
+    STRUCTURE:
+
+    type ModuleName struct {
+        shifter Shifter
+
+        field ...
+    }
+
+    func (this ModuleName) FunctionName(args... type) {
+        this.shifter.BeginShifting(ID)
+        this.shifter.AwaitShifting()
+
+        implementation ...
+    }
+
+    USEFUL FUNCTIONS:
+        @ shifter.go
+            - (Shifter).BeginShifting(id)
+            - (Shifter).AwaitShifting()
+            - (Shifter).DriveAbsolute(target, rate)
+            - (Shifter).DriveRelative(target, rate)
+*/
+// type M1S0 struct {
+//     shifter Shifter
+// }
+//
+// func NewM1S0(shifter Shifter) M1S0 {
+//     return M1S0 {
+//         shifter: shifter,
+//     }
+// }
+//
+// func (this M1S0) Function() {
+//     this.shifter.BeginShifting(0)
+//     this.shifter.AwaitShifting()
+//     this.shifter.DriveRelative(530, 400)
+// }
+
+type M1S0 struct {
+    shifter Shifter
 }
 
-func InitDropper(shifter Shifter, id int, speed int) Dropper {
-	return Dropper {
-		shifter : shifter,
-		id : id,
-		speed : speed,
-	}
+func NewM1S0(shifter Shifter) M1S0 {
+    return M1S0 {
+        shifter: shifter,
+    }
 }
 
-func (m Dropper) Release() {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	m.shifter.Run(-300, m.speed)
-	time.Sleep(time.Millisecond * 500)
+func (this M1S0) Extend() {
+    this.shifter.BeginShifting(0)
+    this.shifter.AwaitShifting()
+    this.shifter.DriveRelative(-1700, 500)
 }
 
-type Lifter struct {
-	shifter		Shifter
-	id			int
-	speed		int
-	absPercent	int
+func (this M1S0) ParitalExtend() {
+    this.shifter.BeginShifting(0)
+    this.shifter.AwaitShifting()
+    this.shifter.DriveRelative(-400, 500)
 }
 
-func InitLifter(shifter Shifter, id, speed, pct int) Lifter {
-	return Lifter {
-		shifter : shifter,
-		id : id,
-		speed : speed,
-		absPercent : pct,
-	}
+func (this M1S0) Retract() {
+    this.shifter.BeginShifting(0)
+    this.shifter.AwaitShifting()
+    this.shifter.DriveRelative(1700, 500)
 }
 
-func (m *Lifter) To(target int) {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	dPercent := target - m.absPercent
-	m.shifter.Run(-57 * dPercent, m.speed)
-	time.Sleep(time.Millisecond * 250)
-	m.absPercent = target
+func (this M1S0) BeginRetract() {
+    this.shifter.BeginDriveRelative(500, 500)
 }
 
-func (m *Lifter) ToAsync(target int) {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	dPercent := target - m.absPercent
-	m.absPercent = target
-	m.shifter.RunAsync(-57 * dPercent, m.speed)
+func (this M1S0) AwaitRetract() {
+    this.shifter.AwaitDriveRelative()
 }
 
-func (m Lifter) AwaitTo() {
-	m.shifter.AwaitRun()
+type M1S1 struct {
+    shifter Shifter
 }
 
-type Column struct {
-	shifter		Shifter
-	id			int
-	speed		int
-	absPercent	int
+func NewM1S1(shifter Shifter) M1S1 {
+    return M1S1 {
+        shifter: shifter,
+    }
 }
 
-func InitColumn(shifter Shifter, id int) Column {
-	return Column {
-		shifter : shifter,
-		id : id,
-	}
+func (this M1S1) Flip() {
+    this.shifter.BeginShifting(1)
+    this.shifter.AwaitShifting()
+    this.shifter.DriveRelative(-900, 500)
 }
 
-func (m Column) To(target int, speed int) {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	m.shifter.Run(target, speed)
-	time.Sleep(time.Millisecond * 250)
+type M1S3 struct {
+    shifter Shifter
 }
 
-type Slide struct {
-	shifter		Shifter
-	id			int
-	speed		int
+func NewM1S3(shifter Shifter) M1S3 {
+    return M1S3 {
+        shifter: shifter,
+    }
 }
 
-func InitSlide(shifter Shifter, id int, speed int) Slide {
-	return Slide {
-		shifter : shifter,
-		id : id,
-		speed : speed,
-	}
-}
-
-func (m Slide) Unlock() {
-	m.shifter.AwaitTo()
-	if m.shifter.current != m.id {
-		m.shifter.To(m.id)
-	}
-	m.shifter.Run(-100, m.speed)
-	time.Sleep(time.Millisecond * 250)
+func (this M1S3) Open() {
+    this.shifter.BeginShifting(3)
+    this.shifter.AwaitShifting()
+    this.shifter.DriveRelative(600, 500)
 }
