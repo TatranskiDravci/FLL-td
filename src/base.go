@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ev3go/ev3dev"
 	"math"
+	"time"
 )
 
 /*
@@ -40,6 +41,7 @@ func NewBase(lp, rp, gyrop string) Base {
 // reset on-board gyroscope
 func (this Base) ResetGyro() {
 	this.gyro.SetMode("GYRO-RATE")
+	time.Sleep(500 * time.Millisecond)
 	this.gyro.SetMode("GYRO-ANG")
 }
 

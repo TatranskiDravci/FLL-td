@@ -3,10 +3,13 @@ package main
 
 func main() {
 	pid  := NewPID(0.0, 25.0, 25.0, 0.0)
+    pidns := NewPIDNS(pid)
 	base := NewBase("A", "D", "1")
+
 	// sensL := NewSensing("3")
     sensB := NewSensing("2")
 	// sensR := NewSensing("4")
+
 	shift := NewShifter("B", "C")
 	module := NewModule(shift)
 
@@ -26,8 +29,8 @@ func main() {
 	// run
 	AwaitButton()
 
-	base.Move(300, sensB, pid, drabB)
-	base.Move(300, sensB, pid, whiteB)
+	base.MoveNS(300, sensB, &pidns, drabB, _initial)
+	base.MoveNS(300, sensB, &pidns, whiteB, _final)
 
 	base.RotateR(-40, 200)
 	module.AwaitDrive()
@@ -38,6 +41,6 @@ func main() {
 	base.Move(300, sensB, pid, whiteB)
 	base.Move(300, sensB, pid, blackB)
 	module.Drive(-4*360, 0)
-	base.Move(300, sensB, pid, blueB)
-	base.Move(300, sensB, pid, blackB)
+	base.MoveNS(300, sensB, &pidns, blueB, _initial)
+	base.MoveNS(300, sensB, &pidns, blackB, _final)
 }

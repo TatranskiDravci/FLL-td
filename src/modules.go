@@ -91,7 +91,7 @@ func NewM1S1(shifter Shifter) M1S1 {
 func (this M1S1) Flip() {
     this.shifter.BeginShifting(1)
     this.shifter.AwaitShifting()
-    this.shifter.DriveRelative(-900, 500)
+    this.shifter.DriveRelative(900, 500)
 }
 
 type M1S3 struct {
@@ -108,4 +108,30 @@ func (this M1S3) Open() {
     this.shifter.BeginShifting(3)
     this.shifter.AwaitShifting()
     this.shifter.DriveRelative(600, 500)
+}
+
+type Module struct {
+    shifter Shifter
+}
+
+func NewModule(shifter Shifter) Module {
+    return Module {
+        shifter: shifter,
+    }
+}
+
+func (this Module) Drive(target, id int) {
+    this.shifter.BeginShifting(id)
+    this.shifter.AwaitShifting()
+    this.shifter.DriveRelative(target, 400)
+}
+
+func (this Module) BeginDrive(target, id int) {
+    this.shifter.BeginShifting(id)
+    this.shifter.AwaitShifting()
+    this.shifter.BeginDriveRelative(target, 400)
+}
+
+func (this Module) AwaitDrive() {
+    this.shifter.AwaitDriveRelative()
 }

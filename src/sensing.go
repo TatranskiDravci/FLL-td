@@ -78,7 +78,9 @@ func (this Sensing) CompareColor(packet [2][3]int) bool {
 	dG := int(math.Abs(float64(G - packet[0][1])))
 	dB := int(math.Abs(float64(B - packet[0][2])))
 
-	fmt.Println(R, G, B, dR, dG, dB)
+	if dR <= 50 || dG <= 50 || dB <= 50 {
+		fmt.Println(R, G, B, dR, dG, dB)
+	}
 
 	return dR <= packet[1][0] && dG <= packet[1][1] && dB <= packet[1][2]
 }
