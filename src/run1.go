@@ -7,23 +7,23 @@ import (
 func main() {
 	pid  := NewPID(0.0, 25.0, 25.0, 0.0)
 	base := NewBase("A", "D", "1")
-	sens1 := NewSensing("3")
-	sens2 := NewSensing("4")
+	sensL := NewSensing("3")
+	sensR := NewSensing("4")
 	shift := NewShifter("B", "C")
 
 	module := NewModule(shift)
 
-	p1 := sens2.ColorCalib("purple")
-	p2 := sens1.ColorCalib("white")
+	purple := sensR.ColorCalib("purpleR")
+	white := sensL.ColorCalib("whiteL")
 
 	AwaitButton()
 
-	base.Move(400, sens2, pid, p1)
+	base.Move(400, sensR, pid, purple)
 	base.RotateR(-42, 200)
 
 	module.BeginDrive(500, 0)	// async retraction
 
-	base.Move(100, sens1, pid, p2)
+	base.Move(100, sensL, pid, white)
 
 	module.AwaitDrive()			// await retraction
 	module.Drive(-1700, 0)		// extend
