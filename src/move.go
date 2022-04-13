@@ -7,9 +7,10 @@ import (
 )
 
 const (
-	_min = 20
+	_min = 25
 	_initial = 0
 	_final = 1
+	_midrun = 2
 )
 
 /*
@@ -240,7 +241,7 @@ func (this Base) MoveReverse(max int, sens Sensing, ctl PID, packet [2][3]int) {
 
 	start := time.Now()
 	speed := float64(max)
-	this.RunSteering(speed, 0)
+	this.RunSteeringReverse(speed, 0)
 	ptime := 0.0
 	perror := 0.0
 	integral := 0.0
@@ -266,10 +267,63 @@ func (this Base) MoveReverse(max int, sens Sensing, ctl PID, packet [2][3]int) {
 
 
 	 	steering := ctl.K_P * error + ctl.K_I * integral // + ctl.K_D * derror / dtime
-		this.RunSteering(speed, steering)
+		this.RunSteeringReverse(speed, steering)
 	}
 	this.Stop()
 	this.Rotate(-Measure(this.gyro, 0), 55)
+}
+
+func (this Base) MoveTimedNS(max int, target float64, ctl *PIDNS, kind int) {
+	fmt.Println("call to Robot/Move")
+	this.ResetGyro()
+	this.SetBrake()
+
+	if kind == _initial {
+		this.ResetGyro()
+		ctl.start = time.Now()
+		ctl.ptime = 0.0
+		ctl.perror = 0.0
+		ctl.integral = 0.0
+	}
+
+	speed := float64(max)
+	this.RunSteering(speed, 0)
+	start := ctl.start
+	ptime := ctl.ptime
+	perror := ctl.perror
+	integral := ctl.integral
+
+	for {
+		// movement correction
+		angle := Measure(this.gyro, 0)
+		time := time.Now().Sub(start).Seconds()
+
+		error := ctl.SP - float64(angle)
+
+		dtime := time - ptime
+		ptime = time
+
+		integral = integral + 0.5 * dtime * (perror + error)
+		// derror := error - perror
+		perror = error
+
+
+	 	steering := ctl.K_P * error + ctl.K_I * integral // + ctl.K_D * derror / dtime
+		this.RunSteering(speed, -steering)
+
+		// breakpoint
+		if time >= target {
+			break
+		}
+	}
+	ctl.ptime = ptime
+	ctl.perror = perror
+	ctl.integral = integral
+
+	if kind == _final {
+		this.Stop()
+		this.Rotate(-Measure(this.gyro, 0), 55)
+	}
 }
 
 /*
@@ -290,7 +344,7 @@ func (this Base) MoveNS(max int, sens Sensing, ctl *PIDNS, packet [2][3]int, kin
 		ctl.integral = 0.0
 	}
 
-
+	fmt.Println(*ctl)
 
 	speed := float64(max)
 	this.RunSteering(speed, 0)
@@ -321,6 +375,67 @@ func (this Base) MoveNS(max int, sens Sensing, ctl *PIDNS, packet [2][3]int, kin
 
 	 	steering := ctl.K_P * error + ctl.K_I * integral // + ctl.K_D * derror / dtime
 		this.RunSteering(speed, -steering)
+	}
+
+	ctl.ptime = ptime
+	ctl.perror = perror
+	ctl.integral = integral
+
+	if kind == _final {
+		this.Stop()
+		this.Rotate(-Measure(this.gyro, 0), 55)
+	}
+}
+
+/*
+	provides reverse non-stop Move function, time interrupt
+		max  		- max speed
+		ctl	 		- PID parameters
+		... 		- color sensing parameters
+*/
+func (this Base) MoveReverseNS(max int, sens Sensing, ctl *PIDNS, packet [2][3]int, kind int) {
+	fmt.Println("call to Robot/Move")
+	this.SetBrake()
+
+	if kind == _initial {
+		this.ResetGyro()
+		ctl.start = time.Now()
+		ctl.ptime = 0.0
+		ctl.perror = 0.0
+		ctl.integral = 0.0
+	}
+
+
+
+	speed := float64(max)
+	this.RunSteeringReverse(speed, 0)
+	start := ctl.start
+	ptime := ctl.ptime
+	perror := ctl.perror
+	integral := ctl.integral
+
+	for {
+		// breakpoint
+		if sens.CompareColor(packet) {
+			break
+		}
+
+		// movement correction
+		angle := Measure(this.gyro, 0)
+		time := time.Now().Sub(start).Seconds()
+
+		error := ctl.SP - float64(angle)
+
+		dtime := time - ptime
+		ptime = time
+
+		integral = integral + 0.5 * dtime * (perror + error)
+		// derror := error - perror
+		perror = error
+
+
+	 	steering := ctl.K_P * error + ctl.K_I * integral // + ctl.K_D * derror / dtime
+		this.RunSteeringReverse(speed, -steering)
 	}
 
 	ctl.ptime = ptime
