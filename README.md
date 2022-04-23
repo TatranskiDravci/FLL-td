@@ -1,5 +1,4 @@
 # FLL-td
-A (hopefully) successful successor to FLL-evicka. Written in golang
 
 ## Project Structure
 
