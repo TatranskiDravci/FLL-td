@@ -6,12 +6,12 @@ A (hopefully) successful successor to FLL-evicka. Written in golang
 ```
 .
 ├── build
-│   └── run_X				--> RG run binary
+│   └── runX				--> RG run binary
 ├── go.mod
 ├── go.sum
 ├── Makefile
 └── src
-    ├── run_X.go			--> RG run code
+    ├── runX.go			--> RG run code
     ├── env.go				--> interaction with environment variables
     ├── exten.go			--> math & miscelaneous functions
     ├── modules.go			--> code for modules on robot
@@ -31,8 +31,8 @@ foo:
  - ***LIB*** - ofter reused, non-RG-run go files from src/
 
 ### Example:
-Make instructions for run_X.go:
+Make instructions for runX.go:
 ```make
-run_X:
-    $(PLATFORM) go build -o build/run_X src/run_X.go $(LIB)
+runX:
+    $(PLATFORM) go build -o build/runX src/runX.go $(LIB)
 ```
