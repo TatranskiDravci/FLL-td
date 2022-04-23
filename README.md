@@ -5,7 +5,7 @@
 ```
 .
 ├── build
-│   └── runX				--> RG run binary
+│   └── runX			--> RG run binary
 ├── go.mod
 ├── go.sum
 ├── Makefile
