@@ -1,3 +1,16 @@
+/*
+	devnote:
+		This codes is a mess beyond saving. The legacy code cleanup was
+		largely unsuccessful 'round here, thus much of the old, unmaintainable
+		codebase still poisons this file. There is no reason to comment individual
+		functions in this file, as such effort would be beyond useless. Hopefully
+		this piece of code dies and disappears after the competition. It is truly
+		marvelous how horrendous and unreadable it is. But at least it works, somewhat...
+
+		This code is designed to interface with environment files located in data/. These
+		files are primitive key=value pair data files, meant for storage of repeatedly
+		used data such as color packets.
+*/
 package main
 
 import (

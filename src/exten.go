@@ -4,10 +4,9 @@ import (
 	"fmt"
 )
 
-// func Within(a, b, thresh int) bool {
-// 	return b < (a + thresh) && b > (a - thresh)
-// }
-
+/*
+	provides middle-button press await
+*/
 func AwaitButton() {
 	fmt.Scanf("%s")
 }

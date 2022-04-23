@@ -12,16 +12,14 @@ import (
 )
 
 /*
-	cl - left   color sensor
+	c - color sensor
 */
 type Sensing struct {
 	c *ev3dev.Sensor
-	k [3]float64
-	l [3]int
 }
 
 /*
-	p - left color sensor port
+	p - color sensor port
 */
 func NewSensing(p string) Sensing {
 	c, _ := ev3dev.SensorFor("ev3-ports:in" + p, "lego-ev3-color")
@@ -30,13 +28,11 @@ func NewSensing(p string) Sensing {
 
 	return Sensing {
 		c: c,
-		k: [3]float64{1.,1.,1.},	// default profile
-		l: [3]int{0.,0.,0.},		// default profile
 	}
 }
 
 /*
-	provides a sensor measurement function
+	provides a sensor reading function
 		sensor  - a sensor to use for the measurement
 		address - measurement address
 */
@@ -46,26 +42,28 @@ func Measure(sensor *ev3dev.Sensor, address int) int {
 	return m
 }
 
-// func MeasureString(sensor *ev3dev.Sensor, address int) string {
-// 	mString, _ := sensor.Value(address)
-// 	return mString
-// }
 
-
-// provides a sensor measurement function on Sensing
+/*
+	provides a color reading function on Sensing
+*/
 func (this Sensing) Measure() [3]int {
-	R := int(this.k[0] * float64(Measure(this.c, 0) - this.l[0]))
-	G := int(this.k[1] * float64(Measure(this.c, 1) - this.l[1]))
-	B := int(this.k[2] * float64(Measure(this.c, 2) - this.l[2]))
-	return [3]int {R, G, B}
+	return [3]int {Measure(this.c, 0), Measure(this.c, 1), Measure(this.c, 2)}
 }
 
+/*
+	provides a color string reading function on Sensing
+*/
 func (this Sensing) MeasureString() [3]string {
 	out := this.Measure()
 	return [3]string{strconv.Itoa(out[0]), strconv.Itoa(out[1]), strconv.Itoa(out[2])}
 }
 
+/*
+	provides a color reading & comparison function on Sensing
+		packet	- color packet to be compared
+*/
 func (this Sensing) CompareColor(packet [2][3]int) bool {
+	// read sensor directly to improve performance and decrease overhead
 	mR, _ := this.c.Value(0)
 	mG, _ := this.c.Value(1)
 	mB, _ := this.c.Value(2)
@@ -85,6 +83,10 @@ func (this Sensing) CompareColor(packet [2][3]int) bool {
 	return dR <= packet[1][0] && dG <= packet[1][1] && dB <= packet[1][2]
 }
 
+/*
+	provides a color calibration function on Sensing
+		name	- color name (used when creating entry in data/)
+*/
 func (this Sensing) ColorCalib(name string) [2][3]int {
 	packet, ok := GetColor2(name)
 	if !ok {
@@ -106,38 +108,5 @@ func (this Sensing) ColorCalib(name string) [2][3]int {
 		cmd.Run()
 	}
 
-
 	return packet
-}
-
-func (this Sensing) ProfileCalib(id string) {
-	k, l, ok := GetProfile(id)
-
-	if !ok {
-		fmt.Println("MISSING PROFILE " + id)
-
-		fmt.Println("SCAN BLACK POINT")
-		AwaitButton()
-		fmt.Println("<<<CALIBRATING>>>")
-
-		L := this.Measure()
-
-		fmt.Println("SCAN WHITE POINT")
-		AwaitButton()
-		fmt.Println("<<<CALIBRATING>>>")
-
-		H := this.Measure()
-
-		this.k = [3]float64{255./float64(H[0] - L[0]), 255./float64(H[1] - L[1]), 255./float64(H[2] - L[2])}
-		this.l = L
-
-		SetProfile(this.k, this.l, id)
-
-		fmt.Println("PROFILE " + id + " LOADED AND SAVED")
-		return
-	}
-
-	this.k = k
-	this.l = l
-	fmt.Println("PROFILE " + id + " LOADED")
 }

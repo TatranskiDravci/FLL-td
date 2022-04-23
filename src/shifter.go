@@ -3,17 +3,27 @@ package main
 import "github.com/ev3go/ev3dev"
 
 const (
-	_optimalRate = 400
-	_offset = 90
+	_optimalRate = 400			// optimal shifter rate
+	_offset = 90				// offset on shifter
 )
 
+/*
+    Shifter interface
+        sm			- shifter motor
+		dm 			- driver  motor
+		nullstate	- state id of a stopped motor
+*/
 type Shifter struct {
 	sm *ev3dev.TachoMotor
 	dm *ev3dev.TachoMotor
 	nullstate ev3dev.MotorState
 }
 
-
+/*
+    Shifter constructor
+        sp	- shifter motor port
+		dp 	- driver  motor port
+*/
 func NewShifter(sp, dp string) Shifter {
 	sm, _ := ev3dev.TachoMotorFor("ev3-ports:out" + sp, "lego-ev3-l-motor")
 	dm, _ := ev3dev.TachoMotorFor("ev3-ports:out" + dp, "lego-ev3-l-motor")
@@ -28,7 +38,7 @@ func NewShifter(sp, dp string) Shifter {
 }
 
 /*
-	asynchronous shifting
+	provides asynchronous Shifting
 		target	- output number
 */
 func (this Shifter) BeginShifting(target int) {
@@ -39,16 +49,16 @@ func (this Shifter) BeginShifting(target int) {
 }
 
 /*
-	await clause for shifting, should be called (at some point) after any BaginShifting call
+    provides await "operator" for asynchronous Shifting
 */
 func (this Shifter) AwaitShifting() {
 	for state, _ := this.sm.State(); state != this.nullstate; state, _ = this.sm.State() {}
 }
 
 /*
-	upper level function for relative module control (synchronous)
+	provides function for synchronous relative module control
 		target	- relative target angle
-		rate	- turn rate of the motor (I think??)
+		rate	- turn rate of the motor
 */
 func (this Shifter) DriveRelative(target, rate int) {
 	this.nullstate, _ = this.dm.State()
@@ -59,9 +69,9 @@ func (this Shifter) DriveRelative(target, rate int) {
 }
 
 /*
-	upper level function for absolute module control (synchronous)
+	provides function for synchronous absolute module control
 		target	- absolute target angle
-		rate	- turn rate of the motor (I think??)
+		rate	- turn rate of the motor
 */
 func (this Shifter) DriveAbsolute(target, rate int) {
 	this.nullstate, _ = this.dm.State()
@@ -71,6 +81,11 @@ func (this Shifter) DriveAbsolute(target, rate int) {
 	for state, _ := this.dm.State(); state != this.nullstate; state, _ = this.dm.State() {}
 }
 
+/*
+	provides function for asynchronous relative module control
+		target	- relative target angle
+		rate	- turn rate of the motor
+*/
 func (this Shifter) BeginDriveRelative(target, rate int) {
 	this.nullstate, _ = this.dm.State()
 	this.dm.SetStopAction("brake")
@@ -78,6 +93,9 @@ func (this Shifter) BeginDriveRelative(target, rate int) {
 	this.dm.SetPositionSetpoint(target).Command("run-to-rel-pos")
 }
 
+/*
+    provides await "operator" for asynchronous relative module control
+*/
 func (this Shifter) AwaitDriveRelative() {
 	for state, _ := this.dm.State(); state != this.nullstate; state, _ = this.dm.State() {}
 }

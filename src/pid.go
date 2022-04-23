@@ -4,13 +4,27 @@ import (
 	"time"
 )
 
+/*
+	basic PID interface
+		SP	- setpoint
+		K_P - proportional	parameter
+		K_I - integral		parameter
+		K_D - differential	parameter
+*/
 type PID struct {
+	SP  float64
 	K_P	float64
 	K_I float64
 	K_D	float64
-	SP  float64
 }
 
+/*
+	basic PID constructor
+		SP	- setpoint
+		K_P - proportional	parameter
+		K_I - integral		parameter
+		K_D - differential	parameter
+*/
 func NewPID(SP, K_P, K_I, K_D float64) PID {
 	return PID {
 		SP:   SP,
@@ -20,19 +34,36 @@ func NewPID(SP, K_P, K_I, K_D float64) PID {
 	}
 }
 
+/*
+	non-stop PID interface
+		SP	- setpoint
+		K_P - proportional	parameter
+		K_I - integral		parameter
+		K_D - differential	parameter
+
+		integral	- transfered integral value
+		perror		- transfered preceeding error value
+		ptime		- transfered preceeding time
+		start		- transfered time on Move initialization
+
+*/
 type PIDNS struct {
 	// storage block
+	SP  float64
 	K_P	float64
 	K_I float64
 	K_D	float64
-	SP  float64
-	// functional block
+	// transfer block
 	integral	float64
 	perror 		float64
 	ptime  		float64
 	start		time.Time
 }
 
+/*
+	non-stop PID constructor (PID -> PIDNS copy constructor)
+		ctl - basic PID object
+*/
 func NewPIDNS(ctl PID) PIDNS {
 	return PIDNS {
 		SP:   ctl.SP,
