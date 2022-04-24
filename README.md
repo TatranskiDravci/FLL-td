@@ -5,17 +5,22 @@
 ```
 .
 ├── build
-│   └── runX			--> RG run binary
+│   └── runX		    --> RG run binary
+├── data
+│   └── ...                 --> persistent data files (e.g. col, err)
 ├── go.mod
 ├── go.sum
 ├── Makefile
 └── src
-    ├── runX.go			--> RG run code
-    ├── env.go				--> interaction with environment variables
-    ├── exten.go			--> math & miscelaneous functions
-    ├── modules.go			--> code for modules on robot
-    ├── robot.go			--> movement code
-    └── shifter.go			--> code for shifter
+    ├── runX.go		    --> RG run code
+    ├── env.go              --> interaction with data/ environment variables
+    ├── exten.go            --> miscelaneous functions
+    ├── modules.go          --> code for modules on robot
+    ├── sensing.go          --> sensor interface and functions
+    ├── base.go             --> basic movement interface and functions
+    ├── pid.go              --> pid interface
+    ├── move.go             --> movement code
+    └── shifter.go          --> code for shifter
 ```
 
 ## Makefile Structure
