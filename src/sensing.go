@@ -12,14 +12,16 @@ import (
 )
 
 /*
-	c - color sensor
+	general sensor interface
+		c - color sensor
 */
 type Sensing struct {
 	c *ev3dev.Sensor
 }
 
 /*
-	p - color sensor port
+	constructor for Sensing
+		p - sensor port
 */
 func NewSensing(p string) Sensing {
 	c, _ := ev3dev.SensorFor("ev3-ports:in" + p, "lego-ev3-color")

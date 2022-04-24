@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	_min = 25
-	_corr = 55
-	_initial = 0
-	_final = 1
-	_midrun = 2
+	_min = 25			// min speed for Rotate
+	_corr = 55			// max speed for angular correction at the end of Move
+	_initial = 0		// non-stop function type
+	_final = 1			// non-stop function type
+	_midrun = 2			// non-stop function type
 )
 
 /*
