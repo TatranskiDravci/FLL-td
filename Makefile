@@ -1,15 +1,13 @@
-PLATFORM = GOOS=linux GOARCH=arm GOARM=5
+CC = arm-linux-gnueabi-gcc
 
-run1: run1.go sensing.go env.go shifter.go exten.go move.go base.go pid.go modules.go
-	$(PLATFORM) go build -o build/run1 $^
+run: run.c sensor.c motor.c shifter.c base.c module.c
+	$(CC) $^ -o build/run1 
 
-run2: run2.go sensing.go env.go shifter.go exten.go move.go base.go pid.go modules.go
-	$(PLATFORM) go build -o build/run2 $^
-
-calib: calibrate.go sensing.go env.go exten.go
-	$(PLATFORM) go build -o build/calibrate $^
-
-vpath %.go src
+vpath %.c src
+vpath %.c src/drivers
+vpath %.c src/base
+vpath %.c src/shifter
+vpath %.c src/module
 
 clean:
 	rm build/*
