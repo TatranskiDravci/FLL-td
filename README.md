@@ -1,5 +1,9 @@
 # FLL-td
 ## Linux
+### Requirements
+ - git
+ - make
+ - arm-linux-gnueabi-gcc
 ### Quickstart
 Clone,
 ```sh

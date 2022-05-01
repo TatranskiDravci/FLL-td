@@ -12,7 +12,7 @@ base baseNew(char lport, char rport, char gyroport)
     sensorSetMode(b.gyro, "GYRO-RATE");
     sensorSetMode(b.gyro, "GYRO-ANG");
 
-    while (sensorRead(b.gyro, '0'));        // wait till sensor gets recalibrated
+    while (sensorRead(b.gyro, '0'));        // wait until sensor gets recalibrated
 
     return b;
 }
@@ -22,7 +22,7 @@ void baseResetGyro(base b)
     sensorSetMode(b.gyro, "GYRO-RATE");
     sensorSetMode(b.gyro, "GYRO-ANG");
 
-    while (sensorRead(b.gyro, '0'));        // wait till sensor gets recalibrated
+    while (sensorRead(b.gyro, '0'));        // wait until sensor gets recalibrated
 }
 
 void baseRunTank(base b, int lspeed, int rspeed)

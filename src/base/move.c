@@ -77,6 +77,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         // calculate steering parameter
         integral += 0.5 * dtime * (perror + error);
         x = ctl->KP * error + ctl->KI * integral; // * ctl->KD * (error - perror) / dtime;
+        
         baseRunSteering(b, speed, -x * direction, direction);
 
         perror = error;
