@@ -69,6 +69,11 @@ void baseRunTank(base b, int lspeed, int rspeed);
 
 */
 void baseRunSteering(base b, double speed, double x, int direction);
+
+/*
+    stop motors
+        b - base object
+*/
 void baseStop(base b);
 
 #endif
