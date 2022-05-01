@@ -11,7 +11,7 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-#define MOTOR_PREFIX "/sys/class/tacho-motor/"
+#define MOTOR_PREFIX "/sys/class/tacho-motor/"          // path to motors
 
 // motor state bit-masks - to check if motor matches the state, use `state & BITMASK` (p.v. 0, 1...)
 #define RUNNING 0b1000
