@@ -34,7 +34,7 @@
         target  - target angle in degrees
         angle   - current angle in degrees
         speed   - maximum speed on the motors in u/s
-        @return - appropriate speed for rotations based on difference of current and target angles
+        @return - appropriate speed for rotations based on difference of current and target angle
 */
 int modSpeed(double target, double angle, double speed);
 
