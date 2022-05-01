@@ -7,32 +7,32 @@ int modSpeed(double target, double angle, double speed)
 {
     double dangle, dspeed;
     dangle = fabs(target - angle);
-	dspeed = speed - MIN_SPEED;
+    dspeed = speed - MIN_SPEED;
 
-	return (int) (min(0.005556 * dspeed * dangle + MIN_SPEED, speed));
+    return (int) (min(0.005556 * dspeed * dangle + MIN_SPEED, speed));
 }
 
 void rotate(base b, int target, int speed)
 {
     baseResetGyro(b);
 
-	while (1)
+    while (1)
     {
         int angle, mod_speed;
-		angle = sensorRead(b.gyro, '0');
-		mod_speed = modSpeed(target, angle, speed);
+        angle = sensorRead(b.gyro, '0');
+        mod_speed = modSpeed(target, angle, speed);
 
-		if (angle == target)
+        if (angle == target)
         {
-			baseStop(b);
-			sleep(0.1);
+            baseStop(b);
+            sleep(0.1);
 
-			// "2x meraj a 1x rež"
-			if (sensorRead(b.gyro, '0') == target) return;
-		}
+            // "2x meraj a 1x rež"
+            if (sensorRead(b.gyro, '0') == target) return;
+        }
         else if (angle > target) baseRunTank(b, mod_speed, -mod_speed);
-	    else baseRunTank(b, -mod_speed, mod_speed);
-	}
+        else baseRunTank(b, -mod_speed, mod_speed);
+    }
 }
 
 void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int fn_type)
