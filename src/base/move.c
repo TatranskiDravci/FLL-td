@@ -30,8 +30,8 @@ void rotate(base b, int target, int speed)
             // "2x meraj a 1x rež"
             if (sensorRead(b.gyro, '0') == target) return;
         }
-        else if (angle > target) baseRunTank(b, mod_speed, -mod_speed);
-        else baseRunTank(b, -mod_speed, mod_speed);
+        else if (angle > target) baseRunTank(b,  mod_speed, -mod_speed);
+        else                     baseRunTank(b, -mod_speed,  mod_speed);
     }
 }
 
@@ -42,10 +42,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
     {
         baseResetGyro(b);
 
-        struct timespec measured_time;
-        clock_gettime(CLOCK_REALTIME, &measured_time);
-
-        ctl->stime = NANO * measured_time.tv_nsec;
+        ctl->stime = timeSeconds();
         ctl->ptime = 0;
         ctl->perror = 0.0;
         ctl->integral = 0.0;
@@ -65,11 +62,8 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         double ctime, dtime;
         double error, x;
 
-        struct timespec measured_time;
-        clock_gettime(CLOCK_REALTIME, &measured_time);
-
         error = ctl->SP - sensorReadDecimal(b.gyro, '0');
-        ctime = NANO * measured_time.tv_nsec - stime;       // elapsed time
+        ctime = timeSeconds() - stime;       // elapsed time
 
         dtime = ctime - ptime;                              // time delta
         ptime = ctime;
@@ -84,6 +78,62 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
 
         // breakpoint
         if (ctime >= duration) break;
+    }
+
+    ctl->ptime = ptime;
+    ctl->perror = perror;
+    ctl->integral = integral;
+
+    if (fn_type & NS_FIN)
+    {
+        baseStop(b);
+        rotate(b, -sensorRead(b.gyro, '0'), FIX_SPEED);
+    }
+}
+
+void moveColor(base b, int speed, color cs, double value, double error, pid *ctl, int direction, int fn_typ)
+{
+    // initialize non-stop movement
+    if (fn_type & NS_INI)
+    {
+        baseResetGyro(b);
+
+        ctl->stime = timeSeconds();
+        ctl->ptime = 0;
+        ctl->perror = 0.0;
+        ctl->integral = 0.0;
+    }
+
+    double stime, ptime;
+    double perror, integral;
+    stime = ctl->stime;
+    ptime = ctl->ptime;
+    perror = ctl->perror;
+    integral = ctl->integral;
+    baseRunSteering(b, speed, 0, direction);
+
+    while (1)
+    {
+        // course correction
+        double ctime, dtime;
+        double error, x;
+
+        error = ctl->SP - sensorReadDecimal(b.gyro, '0');
+        ctime = timeSeconds() - stime;       // elapsed time
+
+        dtime = ctime - ptime;                              // time delta
+        ptime = ctime;
+
+        // calculate steering parameter
+        integral += 0.5 * dtime * (perror + error);
+        x = ctl->KP * error + ctl->KI * integral; // * ctl->KD * (error - perror) / dtime;
+        
+        baseRunSteering(b, speed, -x * direction, direction);
+
+        perror = error;
+
+        // breakpoint
+        if (fabs(colorRead(cs) - value) <= error) break;
     }
 
     ctl->ptime = ptime;

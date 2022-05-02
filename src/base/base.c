@@ -1,4 +1,5 @@
 #include "base.h"
+#include <stdio.h>
 
 base baseNew(char lport, char rport, char gyroport)
 {
@@ -45,4 +46,11 @@ void baseStop(base b)
 {
     motorCommand(b.lmotor, "stop");
     motorCommand(b.rmotor, "stop");
+}
+
+double timeSeconds()
+{
+    struct timespec measured_time;
+    clock_gettime(CLOCK_REALTIME, &measured_time);
+    return NANO * measured_time.tv_nsec;
 }

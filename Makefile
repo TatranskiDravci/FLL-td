@@ -1,6 +1,6 @@
 CC = arm-linux-gnueabi-gcc
 
-run: run.c sensor.c motor.c shifter.c base.c module.c move.c pid.c
+run: run.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
 	$(CC) $^ -o build/run
 
 vpath %.c src

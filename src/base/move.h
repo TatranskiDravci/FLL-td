@@ -11,6 +11,7 @@
 #include <time.h>
 #include "base.h"
 #include "pid.h"
+#include "color.h"
 
 // define fn_type-s
 #define NS_INI 0b01         // initial non-stop function   (no stoppage)
@@ -26,9 +27,6 @@
 #define FIX_SPEED 55        // rotation correction speed after move functions
 #define MIN_SPEED 25        // minimum speed for rotation
 
-// unit conversions
-#define NANO 0.000000001    // nano to unit conversion constant
-
 /*
     provides speed modulation (constant accel. and deccel.) for rotate-like functions
         target  - target angle in degrees
@@ -42,12 +40,25 @@ int modSpeed(double target, double angle, double speed);
     timed movement function
         b         - base object
         speed     - maximum speed on the motors in u/s
-        duration  - the duration of movement in s
+        duration  - the duration of movement in seconds
         *ctl      - pointer to pid object (use `&name_of_pid_object` when calling this function)
         direction - direction in which the movement is to be performed (p.v. FWD (also 1), and BWD (also -1))
         fn_type   - type of movement function to be ran (p.v. NS_INI, NS_FIN, NS_MID, NS_STD)
 */
 void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int fn_type);
+
+/*
+    color guided movement function
+        b         - base object
+        speed     - maximum speed on the motors in u/s
+        cs        - color sensor object 
+        value     - color value
+        error     - allowed color error
+        *ctl      - pointer to pid object (use `&name_of_pid_object` when calling this function)
+        direction - direction in which the movement is to be performed (p.v. FWD (also 1), and BWD (also -1))
+        fn_type   - type of movement function to be ran (p.v. NS_INI, NS_FIN, NS_MID, NS_STD)
+*/
+void moveColor(base b, int speed, color cs, double value, double error, pid *ctl, int direction, int fn_typ);
 
 /*
     simple rotation (rotation axis = centre of the wheel axle)

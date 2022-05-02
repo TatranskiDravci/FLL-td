@@ -23,6 +23,9 @@
         __typeof__ (b) _b = (b); \
         _a < _b ? _a : _b; })
 
+// unit conversions
+#define NANO 0.000000001    // nano to unit conversion constant
+
 /*
     base interface for robot movement control
         lmotor - left  motor object
@@ -31,17 +34,16 @@
 */
 typedef struct Base
 {
-    motor  lmotor;
-    motor  rmotor;
+    motor  lmotor, rmotor;
     sensor gyro;
 }
 base;
 
 /*
-    base constructor
-        lport    - left  motor port (p.v 'A', 'B', 'C', 'D')
-        rport    - right motor port (p.v 'A', 'B', 'C', 'D')
-        gyroport - gyro sensor port (p.v '1', '2', '3', '4')
+    base constructor - creates base object
+        lport    - left  motor port (p.v. 'A', 'B', 'C', 'D')
+        rport    - right motor port (p.v. 'A', 'B', 'C', 'D')
+        gyroport - gyro sensor port (p.v. '1', '2', '3', '4')
         @return  - base object
 */
 base baseNew(char lport, char rport, char gyroport);
@@ -75,5 +77,11 @@ void baseRunSteering(base b, double speed, double x, int direction);
         b - base object
 */
 void baseStop(base b);
+
+/*
+    returns epoch timestamp in seconds with nanosecond accuracy
+        @return - time in seconds
+*/
+double timeSeconds();
 
 #endif
