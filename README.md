@@ -27,28 +27,4 @@ runX: runX.c sensor.c motor.c shifter.c base.c module.c move.c pid.c
 To clean `build/` directory, use `make clean`.
 
 ## Reports
-To create a new report, [use this new issue form](https://github.com/TatranskiDravci/FLL-td/issues/new).
-### Template
-Title:
-```md
-Report [report number]: [short description/note]
-```
-Body:
-```md
-# Quantitative section
-## Number of runs
- - total executed: [total number of executed runs/tests]  
- - by the number of unsuccessful missions out of [total number of missions in a run]:
-   - [total number of missions]: [count of complete failures]
-   - ...: ...
-   - 0: [count of perfect runs]
-## Points collected
- - max: [number of points collected in the best run]
- - min: [number of points collected in the worst run]
- - avg: [average number of points collected per all executed runs]
-# Qualitative section
-## Issues
-[detailed description of problems encountered]
-## Possible improvements
-[improvement suggestions]
-```
+To create a new report, [use this new issue form](https://github.com/TatranskiDravci/FLL-td/issues/new?assignees=LukasDrsman&labels=report&template=report-template.md&title=Report+%5Breport+number%5D%3A+%5Bshort+description%2Fnote%5D).
