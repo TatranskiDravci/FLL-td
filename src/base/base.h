@@ -40,7 +40,7 @@ typedef struct Base
 base;
 
 /*
-    base constructor - creates base object
+    `base` constructor - creates base object
         lport    - left  motor port (p.v. 'A', 'B', 'C', 'D')
         rport    - right motor port (p.v. 'A', 'B', 'C', 'D')
         gyroport - gyro sensor port (p.v. '1', '2', '3', '4')

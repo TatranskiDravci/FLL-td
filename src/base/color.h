@@ -17,7 +17,7 @@ typedef struct Color
 color;
 
 /*
-    color sensor constructor
+    `color` sensor constructor
         sport - color sensor port
 */
 color colorNew(char sport);
