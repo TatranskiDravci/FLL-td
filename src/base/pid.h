@@ -28,7 +28,7 @@ typedef struct PID
 pid;
 
 /*
-    pid constructor
+    `pid` constructor
         SP      - setpoint
         KP      - proportional coefficient
         KI      - integral     coefficient
