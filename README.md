@@ -6,7 +6,7 @@
  - arm-linux-gnueabi-gcc
 
 To install required packages on debian/ubuntu (apt) based systems, use:
-```zsh
+```sh
 sudo apt-get install git make libc6-armel-cross libc6-dev-armel-cross binutils-arm-linux-gnueabi libncurses5-dev build-essential bison flex libssl-dev bc gcc-arm-linux-gnueabi g++-arm-linux-gnueabi
 ```
 ### Quickstart
