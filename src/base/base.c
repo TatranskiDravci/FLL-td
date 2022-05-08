@@ -52,5 +52,5 @@ double timeSeconds()
 {
     struct timespec measured_time;
     clock_gettime(CLOCK_REALTIME, &measured_time);
-    return NANO * measured_time.tv_nsec;
+    return (double) measured_time.tv_sec + NANO * measured_time.tv_nsec;
 }

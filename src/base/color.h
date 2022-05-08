@@ -25,14 +25,18 @@ color colorNew(char sport);
 /*
     loads color profile
         *cs - color sensor pointer (use `&color_sensor_object`)
+        profile_k - k profile file path
+        profile_l - l profile file path
 */
-void colorProfileLoad(color *cs);
+void colorProfileLoad(color *cs, char *profile_k, char *profile_l);
 
 /*
     calibrates and loads color profile
-        *cs - color sensor pointer (use `&color_sensor_object`)
+        *cs       - color sensor pointer (use `&color_sensor_object`)
+        profile_k - k profile file path
+        profile_l - l profile file path
 */
-void colorProfileCalib(color *cs);
+void colorProfileCalib(color *cs, char *profile_k, char *profile_l);
 
 /*
     reads color sensor and normalizes it using k and l calibration parameter

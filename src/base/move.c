@@ -2,6 +2,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <math.h>
+#include <stdio.h>
 
 int modSpeed(double target, double angle, double speed)
 {
@@ -43,7 +44,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         baseResetGyro(b);
 
         ctl->stime = timeSeconds();
-        ctl->ptime = 0;
+        ctl->ptime = 0.0;
         ctl->perror = 0.0;
         ctl->integral = 0.0;
     }
@@ -71,7 +72,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         // calculate steering parameter
         integral += 0.5 * dtime * (perror + error);
         x = ctl->KP * error + ctl->KI * integral; // * ctl->KD * (error - perror) / dtime;
-        
+
         baseRunSteering(b, speed, -x * direction, direction);
 
         perror = error;
@@ -84,6 +85,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
     ctl->perror = perror;
     ctl->integral = integral;
 
+    // finalize non-stop movement
     if (fn_type & NS_FIN)
     {
         baseStop(b);
@@ -91,7 +93,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
     }
 }
 
-void moveColor(base b, int speed, color cs, double value, double error, pid *ctl, int direction, int fn_typ)
+void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl, int direction, int fn_type)
 {
     // initialize non-stop movement
     if (fn_type & NS_INI)
@@ -112,7 +114,7 @@ void moveColor(base b, int speed, color cs, double value, double error, pid *ctl
     integral = ctl->integral;
     baseRunSteering(b, speed, 0, direction);
 
-    while (1)
+    while (fabs(colorRead(cs) - value) > delta)
     {
         // course correction
         double ctime, dtime;
@@ -127,22 +129,47 @@ void moveColor(base b, int speed, color cs, double value, double error, pid *ctl
         // calculate steering parameter
         integral += 0.5 * dtime * (perror + error);
         x = ctl->KP * error + ctl->KI * integral; // * ctl->KD * (error - perror) / dtime;
-        
+
         baseRunSteering(b, speed, -x * direction, direction);
 
         perror = error;
-
-        // breakpoint
-        if (fabs(colorRead(cs) - value) <= error) break;
     }
 
     ctl->ptime = ptime;
     ctl->perror = perror;
     ctl->integral = integral;
 
+    // finalize non-stop movement
     if (fn_type & NS_FIN)
     {
         baseStop(b);
         rotate(b, -sensorRead(b.gyro, '0'), FIX_SPEED);
+    }
+}
+
+void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int direction, int fn_type)
+{
+    // initialize non-stop movement
+    if (fn_type & NS_INI)
+    {
+        baseResetGyro(b);
+    }
+
+    baseRunTank(b, speed, speed);
+
+    while (fabs(colorRead(cs_s) - value) > delta)
+    {
+        double color;
+        color = colorRead(cs_f);
+
+        if (color <= 35.0)     baseRunTank(b, speed, 0.2*speed);
+        else if (color > 35.0) baseRunTank(b, 0.2*speed, speed);
+    }
+
+    // finalize non-stop movement
+    if (fn_type & NS_FIN)
+    {
+        baseStop(b);
+        rotate(b, course - sensorRead(b.gyro, '0'), FIX_SPEED);
     }
 }

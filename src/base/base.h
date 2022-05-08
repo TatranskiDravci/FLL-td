@@ -8,6 +8,7 @@
 #ifndef BASE_H
 #define BASE_H
 
+#include <time.h>
 #include "../drivers/motor.h"
 #include "../drivers/sensor.h"
 

@@ -3,6 +3,9 @@ CC = arm-linux-gnueabi-gcc
 run: run.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
 	$(CC) $^ -o build/run
 
+calib: calib.c sensor.c color.c
+	$(CC) $^ -o build/calib
+
 vpath %.c src
 vpath %.c src/drivers
 vpath %.c src/base

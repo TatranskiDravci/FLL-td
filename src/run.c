@@ -1,17 +1,29 @@
 #include "base/base.h"
 #include "base/move.h"
 #include "base/pid.h"
+#include "base/color.h"
+#include "shifter/shifter.h"
+#include "module/module.h"
+#include <stdio.h>
 
 int main(void)
 {
-    // initialize control interfaces
-    base b; pid ctl;
-    b = baseNew('A', 'D', '1');
-    ctl = pidNew(0.0, 25.0, 15.0, 0.5);
+    base b;
+    pid ctl;
+    shifter s;
+    color cs_f, cs_s;
 
-    moveTimed(b, 300, 3.5, &ctl, FWD, NS_STD);  // move forwards with speed 300u/s for 3.5s with proper stoppage (NS_STD)
-    rotate(b, 45, 200);                         // rotate 45 degrees counter-clockwise with max speed of 200u/s
+    b = baseNew('D', 'A', '1');
+    ctl = pidNew(0.0, 20.0, 0.1, 50.0);
+    s = shifterNew('B', 'C');
+    cs_f = colorNew('4');
+    cs_s = colorNew('3');
 
+    colorProfileLoad(&cs_f, "../data/profile_k_F", "../data/profile_l_F");
+    colorProfileLoad(&cs_s, "../data/profile_k_S", "../data/profile_l_S");
+
+    getc(stdin);
+    moveLine(b, 700, cs_f, cs_s, 100.0, 1.0, -149, FWD, NS_STD);
 
     return 0;
 }

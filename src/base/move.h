@@ -48,17 +48,31 @@ int modSpeed(double target, double angle, double speed);
 void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int fn_type);
 
 /*
-    color guided movement function
+    color stop-action movement function
         b         - base object
         speed     - maximum speed on the motors in u/s
-        cs        - color sensor object 
+        cs        - color sensor object
         value     - color value
-        error     - allowed color error
+        delta     - allowed color error
         *ctl      - pointer to pid object (use `&name_of_pid_object` when calling this function)
         direction - direction in which the movement is to be performed (p.v. FWD (also 1), and BWD (also -1))
         fn_type   - type of movement function to be ran (p.v. NS_INI, NS_FIN, NS_MID, NS_STD)
 */
-void moveColor(base b, int speed, color cs, double value, double error, pid *ctl, int direction, int fn_typ);
+void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl, int direction, int fn_type);
+
+/*
+    color stop-action line guided movement function (cannot be used as non-stop function in combination with non-moveLine functions)
+        b         - base object
+        speed     - maximum speed on the motors in u/s
+        cs_f      - color sensor object for line following
+		cs_s      - color sensor object for stopping
+        value     - color value
+        delta     - allowed color error
+		course	  - course when stopping (for angle correction)
+        direction - direction in which the movement is to be performed (p.v. FWD (also 1), and BWD (also -1))
+        fn_type   - type of movement function to be ran (p.v. NS_INI, NS_FIN, NS_MID, NS_STD)
+*/
+void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int direction, int fn_type);
 
 /*
     simple rotation (rotation axis = centre of the wheel axle)
