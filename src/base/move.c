@@ -162,8 +162,8 @@ void moveLine(base b, int speed, color cs_f, color cs_s, double value, double de
         double color;
         color = colorRead(cs_f);
 
-        if (color <= 35.0)     baseRunTank(b, speed, 0.2*speed);
-        else if (color > 35.0) baseRunTank(b, 0.2*speed, speed);
+        if (color <= 35.0) baseRunTank(b, speed, 0.2*speed);
+        else               baseRunTank(b, 0.2*speed, speed);
     }
 
     // finalize non-stop movement
