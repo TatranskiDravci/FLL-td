@@ -1,5 +1,8 @@
 CC = arm-linux-gnueabi-gcc
 
+# build all targets
+all: run calib
+
 run: run.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
 	$(CC) $^ -o build/run
 
@@ -14,6 +17,9 @@ vpath %.c src/module
 
 clean:
 	rm build/*
+	rm data/*
 
 init:
 	mkdir build
+	mkdir data
+	touch data/placeholder		# required for folder creation on the robot
