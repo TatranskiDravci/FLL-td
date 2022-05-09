@@ -4,6 +4,9 @@
         and standard functions unified in one function, if possible.
 
         p.v. - possible values
+
+    todo:
+        - find fitting STEERING_MOD for bang-bang
 */
 #ifndef MOVE_H
 #define MOVE_H
@@ -27,9 +30,11 @@
 #define FIX_SPEED 75        // rotation correction speed after move functions
 #define MIN_SPEED 50        // minimum speed for rotation
 
-// line following modifiers (lf_mod-s)
+// line following modifiers (lf_mod-s + steering modifier)
 #define LBRW  1             // black line on the left, white line on the right
 #define LWRB -1             // white line on the left, black line on the right
+
+#define STEERING_MOD 20     // modifies the agressivness of steering when following lines (bang-bang agression constant)
 
 /*
     provides speed modulation (constant accel. and deccel.) for rotate-like functions

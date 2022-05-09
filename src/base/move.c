@@ -151,21 +151,12 @@ void moveLine(base b, int speed, color cs_f, color cs_s, double value, double de
         baseResetGyro(b);
     }
 
-    baseRunTank(b, speed, speed);
+    baseRunSteering(b, speed, 0, direction);
 
     while (fabs(colorRead(cs_s) - value) > delta)
     {
-        switch (lf_mod)
-        {
-            case LBRW:
-                if (colorRead(cs_f) <= 35.0) baseRunTank(b, speed, 0.15 * speed);
-                else                         baseRunTank(b, 0.15 * speed, speed);
-                break;
-            case LWRB:
-                if (colorRead(cs_f) <= 35.0) baseRunTank(b, 0.15 * speed, speed);
-                else                         baseRunTank(b, speed, 0.15 * speed);
-                break;
-        }
+        if (colorRead(cs_f) <= 35.0) baseRunSteering(b, speed,  lf_mod * STEERING_MOD, direction);
+        else                         baseRunSteering(b, speed, -lf_mod * STEERING_MOD, direction);
     }
 
     // finalize non-stop movement
