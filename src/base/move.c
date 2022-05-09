@@ -49,7 +49,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         ctl->integral = 0.0;
     }
 
-    double stime, ptime;
+    double stime, ptime, ctime;
     double perror, integral;
     stime = ctl->stime;
     ptime = ctl->ptime;
@@ -57,14 +57,13 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
     integral = ctl->integral;
     baseRunSteering(b, speed, 0, direction);
 
-    while (1)
+    while ((ctime = timeSeconds() - stime) >= duration)
     {
         // course correction
-        double ctime, dtime;
+        double dtime;
         double error, x;
 
         error = ctl->SP - sensorReadDecimal(b.gyro, '0');
-        ctime = timeSeconds() - stime;       // elapsed time
 
         dtime = ctime - ptime;                              // time delta
         ptime = ctime;
@@ -76,9 +75,6 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         baseRunSteering(b, speed, -x * direction, direction);
 
         perror = error;
-
-        // breakpoint
-        if (ctime >= duration) break;
     }
 
     ctl->ptime = ptime;
@@ -147,7 +143,7 @@ void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl
     }
 }
 
-void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int direction, int fn_type)
+void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int lf_mod, int direction, int fn_type)
 {
     // initialize non-stop movement
     if (fn_type & NS_INI)
@@ -159,11 +155,17 @@ void moveLine(base b, int speed, color cs_f, color cs_s, double value, double de
 
     while (fabs(colorRead(cs_s) - value) > delta)
     {
-        double color;
-        color = colorRead(cs_f);
-
-        if (color <= 35.0) baseRunTank(b, speed, 0.2*speed);
-        else               baseRunTank(b, 0.2*speed, speed);
+        switch (lf_mod)
+        {
+            case LBRW:
+                if (colorRead(cs_f) <= 35.0) baseRunTank(b, speed, 0.15 * speed);
+                else                         baseRunTank(b, 0.15 * speed, speed);
+                break;
+            case LWRB:
+                if (colorRead(cs_f) <= 35.0) baseRunTank(b, 0.15 * speed, speed);
+                else                         baseRunTank(b, speed, 0.15 * speed);
+                break;
+        }
     }
 
     // finalize non-stop movement

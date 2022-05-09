@@ -24,8 +24,12 @@
 #define BWD -1              // move backwards
 
 // speed setpoints for rotation
-#define FIX_SPEED 55        // rotation correction speed after move functions
-#define MIN_SPEED 25        // minimum speed for rotation
+#define FIX_SPEED 75        // rotation correction speed after move functions
+#define MIN_SPEED 50        // minimum speed for rotation
+
+// line following modifiers (lf_mod-s)
+#define LBRW  1             // black line on the left, white line on the right
+#define LWRB -1             // white line on the left, black line on the right
 
 /*
     provides speed modulation (constant accel. and deccel.) for rotate-like functions
@@ -65,14 +69,15 @@ void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl
         b         - base object
         speed     - maximum speed on the motors in u/s
         cs_f      - color sensor object for line following
-		cs_s      - color sensor object for stopping
+        cs_s      - color sensor object for stopping
         value     - color value
         delta     - allowed color error
-		course	  - course when stopping (for angle correction)
+        course    - course when stopping (for angle correction)
+        lf_mod    - line following modifier (modifies which line is to the left and which to the right of the sensor)
         direction - direction in which the movement is to be performed (p.v. FWD (also 1), and BWD (also -1))
         fn_type   - type of movement function to be ran (p.v. NS_INI, NS_FIN, NS_MID, NS_STD)
 */
-void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int direction, int fn_type);
+void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int lf_mod, int direction, int fn_type);
 
 /*
     simple rotation (rotation axis = centre of the wheel axle)

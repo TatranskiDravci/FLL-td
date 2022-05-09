@@ -23,7 +23,7 @@ int main(void)
     colorProfileLoad(&cs_s, "../data/profile_k_S", "../data/profile_l_S");
 
     getc(stdin);
-    moveLine(b, 700, cs_f, cs_s, 100.0, 1.0, -149, FWD, NS_STD);
+    moveLine(b, 600, cs_f, cs_s, 100.0, 7.0, -41, FWD, NS_STD);
 
     return 0;
 }

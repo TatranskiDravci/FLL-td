@@ -1,5 +1,6 @@
 #include "base.h"
 #include <stdio.h>
+#include <unistd.h>
 
 base baseNew(char lport, char rport, char gyroport)
 {
@@ -8,22 +9,29 @@ base baseNew(char lport, char rport, char gyroport)
     b.rmotor = motorNew(rport);
     b.gyro   = sensorNew(gyroport);
 
-    motorSetStopAction(b.lmotor, "hold");
-    motorSetStopAction(b.rmotor, "hold");
+    motorSetStopAction(b.lmotor, "brake");
+    motorSetStopAction(b.rmotor, "brake");
     sensorSetMode(b.gyro, "GYRO-RATE");
     sensorSetMode(b.gyro, "GYRO-ANG");
 
-    while (sensorRead(b.gyro, '0'));        // wait until sensor gets recalibrated
+    while (sensorRead(b.gyro, '0'))
+    {
+        sensorSetMode(b.gyro, "GYRO-RATE");
+        sensorSetMode(b.gyro, "GYRO-ANG");
+        sleep(0.1);
+    }
 
     return b;
 }
 
 void baseResetGyro(base b)
 {
-    sensorSetMode(b.gyro, "GYRO-RATE");
-    sensorSetMode(b.gyro, "GYRO-ANG");
-
-    while (sensorRead(b.gyro, '0'));        // wait until sensor gets recalibrated
+    while (sensorRead(b.gyro, '0'))
+    {
+        sensorSetMode(b.gyro, "GYRO-RATE");
+        sensorSetMode(b.gyro, "GYRO-ANG");
+        sleep(0.1);
+    }
 }
 
 void baseRunTank(base b, int lspeed, int rspeed)
