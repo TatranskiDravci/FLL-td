@@ -83,6 +83,6 @@ void baseStop(base b);
     returns epoch timestamp in seconds with nanosecond accuracy
         @return - time in seconds
 */
-double timeSeconds();
+double timeSeconds(void);
 
 #endif
