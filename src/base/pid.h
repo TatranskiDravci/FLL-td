@@ -9,21 +9,16 @@
         KD - differential coefficient
 
         integral - transfered integral value
-        perror   - transfered preceeding error value
-        ptime    - transfered preceeding time
+        perror   - transfered previous error value
+        ptime    - transfered previous time
         stime    - transfered time on move initialization
 */
 typedef struct PID
 {
-    double SP;
-    double KP;
-    double KI;
-    double KD;
-
-    double integral;
-    double perror;
-    double ptime;
-    double stime; 
+    // constant block
+    double SP, KP, KI, KD;
+    // variable block
+    double integral, perror, ptime, stime;
 }
 pid;
 
