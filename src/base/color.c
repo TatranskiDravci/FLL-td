@@ -39,8 +39,11 @@ void colorProfileCalib(color *cs, char *profile_k, char *profile_l)
     printf("scan black\n");
     getc(stdin);
     printf("scanned\n");
+
+    // read and sum some number of values
     for (int i = 0; i < 50; i++) b += sensorReadDecimal(cs->s, '0');
 
+    // divide by number of values read
     w *= 0.02;
     b *= 0.02;
 
