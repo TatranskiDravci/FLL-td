@@ -4,12 +4,6 @@
         and standard functions unified in one function, if possible.
 
         p.v. - possible values
-
-    todo:
-        - find fitting STEERING_MOD for bang-bang
-        - test lf_mod-s
-            - if the robot steers in the opposite direction than desired,
-              make LBRW 1 and LWRB -1
 */
 #ifndef MOVE_H
 #define MOVE_H
