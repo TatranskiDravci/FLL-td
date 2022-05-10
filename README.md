@@ -19,9 +19,9 @@ initialize build directory,
 ```sh
 make init
 ```
-and build run (e.g. `run.c`),
+and build all targets,
 ```sh
-make run
+make
 ```
 ### Makefile
 To create build instructions for `runX.c`, use this template:
