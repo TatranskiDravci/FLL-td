@@ -57,7 +57,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
     integral = ctl->integral;
     baseRunSteering(b, speed, 0, direction);
 
-    while ((ctime = timeSeconds() - stime) >= duration)
+    while ((ctime = timeSeconds() - stime) < duration)
     {
         // course correction
         double dtime;
@@ -155,8 +155,8 @@ void moveLine(base b, int speed, color cs_f, color cs_s, double value, double de
 
     while (fabs(colorRead(cs_s) - value) > delta)
     {
-        if (colorRead(cs_f) <= 35.0) baseRunSteering(b, speed,  lf_mod * STEERING_MOD, direction);
-        else                         baseRunSteering(b, speed, -lf_mod * STEERING_MOD, direction);
+        if (colorRead(cs_f) <= 35.0) baseRunSteering(b, speed,  lf_mod * STEERING_MOD * speed, direction);
+        else                         baseRunSteering(b, speed, -lf_mod * STEERING_MOD * speed, direction);
     }
 
     // finalize non-stop movement

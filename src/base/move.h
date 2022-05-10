@@ -37,7 +37,7 @@
 #define LBRW  1             // black line on the left, white line on the right
 #define LWRB -1             // white line on the left, black line on the right
 
-#define STEERING_MOD 20     // modifies the aggressiveness of steering when following lines (bang-bang agression constant)
+#define STEERING_MOD 0.9167 // modifies the aggressiveness of steering when following lines (bang-bang agression constant)
 
 /*
     provides speed modulation (constant accel. and deccel.) for rotate-like functions
