@@ -46,4 +46,12 @@ void shifterAsyncDrive(shifter s, int target);
 */
 void shifterAwaitDrive(shifter s);
 
+/*
+    drive modules asynchronously with modular speed
+        s      - `shifter` object
+        target - module angle target
+        speed  - module drive rate
+*/
+void shifterAsyncDriveModularSpeed(shifter s, int target, int speed);
+
 #endif

@@ -34,3 +34,10 @@ void shifterAwaitDrive(shifter s)
 {
     while (motorState(s.dmotor) & RUNNING);
 }
+
+void shifterAsyncDriveModularSpeed(shifter s, int target, int speed)
+{
+    motorSetSpeed(s.dmotor, speed);
+    motorSetTarget(s.dmotor, target);
+    motorCommand(s.dmotor, "run-to-rel-pos");
+}
