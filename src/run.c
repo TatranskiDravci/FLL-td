@@ -24,7 +24,7 @@ int main(void)
     colorProfileLoad(&cs_s, "../data/profile_k_S", "../data/profile_l_S");
 
     getc(stdin);
-
+/*
     moveTimed(b, 600, 1.5, &ctl, FWD, NS_STD);
     moveLine(b, 500, cs_f, cs_s, 100.0, 8.0, -41, FWD, LBRW, NS_STD);
     moveColor(b, 100, cs_s, 0, 10.0, &ctl, FWD, NS_STD);
@@ -44,6 +44,23 @@ int main(void)
     moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
 
     shifterShift(s, 0);
+*/
+
+    
+    moveTimed(b, 300, 0.5, &ctl, FWD, NS_STD);
+    rotate(b, -50, 400);
+
+    moveColor(b, 500, cs_s, 0, 10, &ctl, FWD, NS_STD);
+    moveTimed(b, 400, 1.1, &ctl, FWD, NS_STD);
+    rotate(b, -40, 400);
+
+    moveColor(b, 500, cs_s, 0, 10, &ctl, FWD, NS_STD);
+
+    moveTimed(b, 500, 1.5, &ctl, FWD, NS_STD);
+    moveTimed(b, 500, 0.5, &ctl, BWD, NS_STD);
+    moveTimed(b, 500, 1, &ctl, FWD, NS_STD);
+    
+    moduleDrive(s, -120, 2);
 
     return 0;
 }
