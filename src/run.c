@@ -47,20 +47,23 @@ int main(void)
 */
 
     
-    moveTimed(b, 300, 0.5, &ctl, FWD, NS_STD);
-    rotate(b, -50, 400);
+    moveTimed(b, 300, 0.4, &ctl, FWD, NS_STD);
+    rotate(b, -55, 400);
 
     moveColor(b, 500, cs_s, 0, 10, &ctl, FWD, NS_STD);
     moveTimed(b, 400, 1.1, &ctl, FWD, NS_STD);
-    rotate(b, -40, 400);
+    rotate(b, -35, 400);
 
     moveColor(b, 500, cs_s, 0, 10, &ctl, FWD, NS_STD);
 
-    moveTimed(b, 500, 1.5, &ctl, FWD, NS_STD);
-    moveTimed(b, 500, 0.5, &ctl, BWD, NS_STD);
+    //bridge
+    moveTimed(b, 500, 3, &ctl, FWD, NS_STD);
+    moveTimed(b, 500, 1, &ctl, BWD, NS_STD);
     moveTimed(b, 500, 1, &ctl, FWD, NS_STD);
-    
+    //inno project
     moduleDrive(s, -120, 2);
+
+    shifterShift(s, 0);
 
     return 0;
 }
