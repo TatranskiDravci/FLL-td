@@ -1,10 +1,13 @@
 CC = arm-linux-gnueabi-gcc
 
 # build all targets
-all: run calib colors
+all: run1 run2 calib colors
 
-run: run.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
-	$(CC) $^ -o build/run
+run1: run1.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
+	$(CC) $^ -o build/run1
+
+run2: run2.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
+	$(CC) $^ -o build/run2
 
 calib: calib.c sensor.c color.c
 	$(CC) $^ -o build/calib
