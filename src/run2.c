@@ -36,7 +36,7 @@ int main(void)
 
     moveColor(b, 500, cs_s, 0, 5, &ctl, FWD, NS_INI);
 
-    // bridge
+    //bridge
     moveColor(b, 500, cs_s, 100, 20, &ctl, FWD, NS_FIN);
     rotate(b, -2, 400);
     moveColor(b, 500, cs_s, 7, 5, &ctl, FWD, NS_INI);
@@ -45,7 +45,7 @@ int main(void)
     moveTimed(b, 500, 1, &ctl, BWD, NS_STD);
     moveTimed(b, 500, 1.4, &ctl, FWD, NS_STD);
 
-    // inno project
+    //inno project
     moduleDrive(s, -120, 2);
 
     // moveColor(b, 500, cs_s, 0, 5, &ctl, BWD, NS_STD);
