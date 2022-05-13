@@ -47,29 +47,34 @@ int main(void)
 */
 
 
-    moveTimed(b, 300, 0.4, &ctl, FWD, NS_STD);
-    rotate(b, -55, 400);
+    moduleDrive(s, 450, 3);
+    moveTimed(b, 300, 0.8, &ctl, FWD, NS_STD);
+    rotate(b, -50, 400);
 
-    moveColor(b, 500, cs_s, 0, 7, &ctl, FWD, NS_STD);
-    moveTimed(b, 400, 1.15, &ctl, FWD, NS_STD);
-    rotate(b, -35, 400);
+    moveColor(b, 500, cs_s, 0, 7, &ctl, FWD, NS_INI);
+    moveColor(b, 200, cs_s, 100, 20, &ctl, FWD, NS_FIN);
+    moveTimed(b, 200, 1.6, &ctl, FWD, NS_STD);
+    rotate(b, -38, 400);
 
-    moveColor(b, 500, cs_s, 0, 10, &ctl, FWD, NS_STD);
+    moveColor(b, 500, cs_s, 0, 5, &ctl, FWD, NS_INI);
 
     //bridge
-    moveTimed(b, 500, 2.5, &ctl, FWD, NS_STD);
+    moveColor(b, 500, cs_s, 100, 20, &ctl, FWD, NS_FIN);
+    rotate(b, -2, 400);
+    moveColor(b, 500, cs_s, 7, 5, &ctl, FWD, NS_INI);    
+    moveColor(b, 500, cs_s, 0, 5, &ctl, FWD, NS_FIN);
+    moveTimed(b, 500, 0.7, &ctl, FWD, NS_STD);
     moveTimed(b, 500, 1, &ctl, BWD, NS_STD);
-    moveTimed(b, 500, 1.5, &ctl, FWD, NS_STD);
+    moveTimed(b, 500, 1.4, &ctl, FWD, NS_STD);
     
     //inno project
     moduleDrive(s, -120, 2);
 
-
-    rotate(b, 45, 400);
-    moveTimed(b, 400, 0.8, &ctl, BWD, NS_STD);
+/*
+    moveColor(b, 500, cs_s, 0, 5, &ctl, BWD, NS_STD);
     moduleDrive(s, -270, 3);
     moduleDrive(s, 270, 3);
-
+*/
     shifterShift(s, 0);
 
     return 0;
