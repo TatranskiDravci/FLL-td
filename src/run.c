@@ -3,7 +3,7 @@
 #include "base/pid.h"
 #include "base/color.h"
 #include "shifter/shifter.h"
-#include "module/module.h"
+#include "shifter/module.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -31,7 +31,7 @@ int main(void)
 
     moduleDrive(s, -530, 3);
     moduleDrive(s,  180, 2);
-    
+
     moduleDrive(s,  550, 1);
     sleep(0.5);
     moduleDrive(s, -550, 1);

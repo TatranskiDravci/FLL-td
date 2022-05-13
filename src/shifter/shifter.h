@@ -6,7 +6,6 @@
 // shifter constants
 #define SHIFTER_RATE 400
 #define SHIFTER_OFFSET 90
-#define DRIVE_RATE 700            // rate of `dmotor` on `shifter` 
 
 /*
     shifter interface
@@ -32,26 +31,5 @@ shifter shifterNew(char sport, char dport);
         id - module id
 */
 void shifterShift(shifter s, int id);
-
-/*
-    drive modules asynchronously
-        s      - `shifter` object
-        target - module angle target
-*/
-void shifterAsyncDrive(shifter s, int target);
-
-/*
-    await asynchronous drive (call after shifterAsyncDrive(...) to wait for it to finish) 
-        s - `shifter` object
-*/
-void shifterAwaitDrive(shifter s);
-
-/*
-    drive modules asynchronously with modular speed
-        s      - `shifter` object
-        target - module angle target
-        speed  - module drive rate
-*/
-void shifterAsyncDriveModularSpeed(shifter s, int target, int speed);
 
 #endif

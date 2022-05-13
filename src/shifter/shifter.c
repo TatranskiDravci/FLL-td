@@ -22,22 +22,3 @@ void shifterShift(shifter s, int id)
 
     while (motorState(s.smotor) & RUNNING);
 }
-
-void shifterAsyncDrive(shifter s, int target)
-{
-    motorSetSpeed(s.dmotor, DRIVE_RATE);
-    motorSetTarget(s.dmotor, target);
-    motorCommand(s.dmotor, "run-to-rel-pos");
-}
-
-void shifterAwaitDrive(shifter s)
-{
-    while (motorState(s.dmotor) & RUNNING);
-}
-
-void shifterAsyncDriveModularSpeed(shifter s, int target, int speed)
-{
-    motorSetSpeed(s.dmotor, speed);
-    motorSetTarget(s.dmotor, target);
-    motorCommand(s.dmotor, "run-to-rel-pos");
-}
