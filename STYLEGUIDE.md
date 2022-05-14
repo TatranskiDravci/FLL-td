@@ -71,7 +71,7 @@ else                     call(...);
 ```
 ## Naming
 ### Functions
-To name functions, `camelCase` is used. The first character of the name is to be lower cased. Any other word, appended to the name is to have its first character capitalized. When naming functions, tightly related to specific types, the name of the type should be the first word to appear in teh function name.
+To name functions, `camelCase` is used. The first character of the name is to be lower cased. Any other word, appended to the name is to have its first character capitalized. When naming functions, tightly related to specific types, the name of the type should be the first word to appear in the function name.
 
 Suppose a type `foo` is declared, then the constructor for `foo` is to be declared as
 ```c
