@@ -25,29 +25,28 @@ int main(void)
 
     getc(stdin);
 
-
-    //get to line
+    // get to line
     moveTimed(b, 300, 0.4, &ctl, FWD, NS_STD);
     rotate(b, -50, 400);
-    moveColor(b, 700, cs_s, 0, 7, &ctl, FWD, NS_INI);
-    moveColor(b, 200, cs_s, 100, 20, &ctl, FWD, NS_FIN);
-    moveTimed(b, 200, 2, &ctl, FWD, NS_STD);
+    moveColor(b, 700, cs_s, 0.0, 7.0, &ctl, FWD, NS_INI);
+    moveColor(b, 200, cs_s, 100.0, 20.0, &ctl, FWD, NS_FIN);
+    moveTimed(b, 200, 2.0, &ctl, FWD, NS_STD);
     rotate(b, -38, 400);
 
-    //move on line
-    moveColor(b, 700, cs_f, 0, 8, &ctl, FWD, NS_INI);
-    moveColor(b, 700, cs_f, 100, 20, &ctl, FWD, NS_MID);
-    moveColor(b, 700, cs_f, 0, 8, &ctl, FWD, NS_FIN);
+    // move on line
+    moveColor(b, 700, cs_f, 0.0, 8.0, &ctl, FWD, NS_INI);
+    moveColor(b, 700, cs_f, 100.0, 20.0, &ctl, FWD, NS_MID);
+    moveColor(b, 700, cs_f, 0.0, 8.0, &ctl, FWD, NS_FIN);
     moveTimed(b, 500, 2, &ctl, FWD, NS_STD);
-    moveColor(b, 500, cs_s, 0, 8, &ctl, FWD, NS_STD);
+    moveColor(b, 500, cs_s, 0.0, 8.0, &ctl, FWD, NS_STD);
 
-    //put down boxes
+    // put down boxes
     moduleDrive(s, -3960, 0);
 
-    //go back
+    // go back
     moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
 
-    //turn left and do the heli
+    // turn left and do the heli
     moduleAsyncDrive(s, 3960, 0);
     rotate(b, 88, 400);
     moveTimed(b, 500, 0.8, &ctl, FWD, NS_STD);
@@ -57,25 +56,23 @@ int main(void)
     rotate(b, 60, 400);
     moduleAwaitDrive(s);
 
-    //put down forks
+    // put down forks
     moduleDrive(s, -900, 1);
-    
-    //lower pusher stick
+
+    // lower pusher stick
     moduleDrive(s, -400, 2);
 
-    //reverse
-    moveTimed(b, 500, 1, &ctl, BWD, NS_STD);
+    // reverse
+    moveTimed(b, 500, 1.0, &ctl, BWD, NS_STD);
 
-    //raise forks
+    // raise forks
     moduleDrive(s, 900, 1);
 
-    //adjust push stick
+    // adjust push stick
     moduleDrive(s, 45, 2);
 
-    //reverse a bit more
+    // reverse a bit more
     moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
-
-
 
     shifterShift(s, 0);
 

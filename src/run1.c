@@ -25,32 +25,32 @@ int main(void)
 
     getc(stdin);
 
-    //get to position
+    // get to position
     moveTimed(b, 600, 1.5, &ctl, FWD, NS_STD);
     moveLine(b, 500, cs_f, cs_s, 100.0, 8.0, -41, FWD, LBRW, NS_STD);
     moveColor(b, 100, cs_s, 0.0, 10.0, &ctl, FWD, NS_STD);
 
-    //cargo plane
+    // cargo plane
     moduleDrive(s, -530, 3);
 
-    //motor setup
+    // motor setup
     moduleDrive(s,  180, 2);
-    
-    //plane
+
+    // plane
     moduleDrive(s,  550, 1);
     sleep(0.5);
     moduleDrive(s, -550, 1);
     moduleDrive(s,  550, 1);
     moduleDrive(s, -550, 1);
 
-    //cargo plane stick up
+    // cargo plane stick up
     moduleDrive(s,  530, 3);
 
-    //nudge motor
+    // nudge motor
     moveTimed(b, 600, 0.3, &ctl, FWD, NS_STD);
     moduleDrive(s, -180, 2);
 
-    //back
+    // back
     moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
 
     shifterShift(s, 0);
