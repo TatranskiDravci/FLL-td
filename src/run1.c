@@ -24,10 +24,10 @@ int main(void)
     colorProfileLoad(&cs_s, "../data/profile_k_S", "../data/profile_l_S");
 
     getc(stdin);
-    
+
     moveTimed(b, 600, 1.5, &ctl, FWD, NS_STD);
     moveLine(b, 500, cs_f, cs_s, 100.0, 8.0, -41, FWD, LBRW, NS_STD);
-    moveColor(b, 100, cs_s, 0, 10.0, &ctl, FWD, NS_STD);
+    moveColor(b, 100, cs_s, 0.0, 10.0, &ctl, FWD, NS_STD);
 
     moduleDrive(s, -530, 3);
     moduleDrive(s,  180, 2);
