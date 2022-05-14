@@ -25,18 +25,19 @@ int main(void)
 
     getc(stdin);
     
+    //retract crane arm
     moduleAsyncDrive(s, -900, 3);
+    
+    //get to line
     moveTimed(b, 300, 0.8, &ctl, FWD, NS_STD);
     rotate(b, -50, 400);
-
     moveColor(b, 700, cs_s, 0, 7, &ctl, FWD, NS_INI);
     moveColor(b, 200, cs_s, 100, 20, &ctl, FWD, NS_FIN);
     moveTimed(b, 200, 1.6, &ctl, FWD, NS_STD);
     rotate(b, -36, 400);
 
-    moveColor(b, 700, cs_s, 0, 5, &ctl, FWD, NS_INI);
-
     //bridge
+    moveColor(b, 700, cs_s, 0, 5, &ctl, FWD, NS_INI);
     moveColor(b, 700, cs_s, 100, 20, &ctl, FWD, NS_MID);
     moveColor(b, 700, cs_s, 7, 5, &ctl, FWD, NS_MID);
     moveColor(b, 700, cs_f, 0, 5, &ctl, FWD, NS_FIN);
