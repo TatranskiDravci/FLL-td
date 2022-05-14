@@ -17,7 +17,7 @@ switch (something) ...;
 Two styles are used for blocks of code (enclosed by the curly braces `{}`). For if-else clauses and loops with only one call within, single-line style is used, (for the if-else clauses) usually with the matching calls indented in such way, that they start at the same column
 ```c
 if (something)           call(...);
-else if (something else) call(...);
+else if (something_else) call(...);
 else                     call(...);
 ```
 In this case, the parameters should, if possible, be also aligned by the column. This isn't necessarily the case for loops or if-else clauses with different calls
@@ -69,6 +69,66 @@ if (something)
 else if (something else) call(...);
 else                     call(...);
 ```
+## Comments
+### Simple comments
+Comments describing a block of calls should be placed a line above that "block", separated by an empty line with the previous. Comments, describing effects of specific calls should be placed besides the corresponding call and should be aligned in the same column. There should always be (at least) a single space between `//` and the actual comment.
+```c
+something(...);
+somethingElse(...);
+
+// description of the call block
+something(...);                    // description of the effect of `something`
+somethingElse(...);                // description of the effect of `somethingElse`
+whatever(...);
+
+```
+### Multi-line comments
+When describing more complicated behaviour, multi-line comments can be used. A multi-line comment should be structured as such
+```c
+/*
+    general description of some action
+    can be written in sentences, if too long,
+    should be divided into multiple lines
+        - lists
+        - can be
+        - utilized too
+*/
+```
+The `/* */` marks should always be placed at the current indentation level. 1 soft-tab should be used for the description, 2 soft-tabs should be used for lists.
+
+### Commenting out function calls
+When commenting out function calls, two slashes with one space (`// `) must be used. This is because many text editors support `Ctrl + /` shortcut for quick commenting and uncommenting selected calls. This feature sadly doesn't work with multi-line comments, thus single line comments should always be used in this case.
+```c
+// inactive block
+// something(...);
+// somethingElse(...);
+
+// description of the call block
+something(...);                    // description of the effect of `something`
+somethingElse(...);                // description of the effect of `somethingElse`
+whatever(...);
+```
+### Documenting functions
+When writing a reference comment for a defined function, the following template should be used
+```c
+/*
+    function description (what it does)
+        parameter1 - description of parameter1
+        parameter2 - description of parameter2
+        ...
+        @return    - description of the returned value (can be left out if the return type is void)
+*/
+```
+Suppose a function for getting `bar` from `foo` is defined (`foo` being its only parameter), then the definition in some `.h` file with the reference comment would be
+```c
+/*
+    gets bar from foo and returns it
+        f       - foo object
+        @return - bar object
+*/
+bar fooGetBar(foo f);
+
+``` 
 ## Naming
 ### Functions
 To name functions, `camelCase` is used. The first character of the name is to be lower cased. Any other word, appended to the name is to have its first character capitalized. When naming functions, tightly related to specific types, the name of the type should be the first word to appear in the function name.
