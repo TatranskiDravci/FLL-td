@@ -36,3 +36,6 @@ To create a new report, [use this new issue form](https://github.com/TatranskiDr
 
 ## Documentation
 The documentation for the code, provided in subdirectories of `src/` can be found [here](https://github.com/TatranskiDravci/FLL-td/wiki). One may also refer to the header files (`.h` files) in the subdirectories of `src/`. These contain relatively detailed descriptions of the usage and parameters of the provided functions as well as some useful constants. (Note, the documentation in `src/drivers/*.h` is kept relatively simple. This is because a detailed description of every function would be beyond useless in this specific case.)
+
+## Styleguide
+A relatively comprehensive styleguide with examples can be found [here](https://github.com/TatranskiDravci/FLL-td/blob/main/STYLEGUIDE.md) or on the [wiki](https://github.com/TatranskiDravci/FLL-td/wiki/Styleguide).
