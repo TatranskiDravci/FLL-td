@@ -24,7 +24,7 @@ In this case, the parameters should, if possible, be also aligned by the column.
 
 ```c
 if (something) call(...);
-else if (something else) otherCall(...);
+else if (something_else) otherCall(...);
 else yetAnotherCall(...);
 ```
 ```c
