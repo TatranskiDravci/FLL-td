@@ -10,7 +10,7 @@ Parentheses after control statements (`if`, `while`, `for`, `switch`) are to be 
 if (something) ...;
 while (something) ...;
 for (something) ...;
-switch (comething) ...;
+switch (something) ...;
 ```
 
 ## Code blocks
