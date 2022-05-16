@@ -146,10 +146,7 @@ void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl
 void moveLine(base b, int speed, color cs_f, color cs_s, double value, double delta, int course, int lf_mod, int direction, int fn_type)
 {
     // initialize non-stop movement
-    if (fn_type & NS_INI)
-    {
-        baseResetGyro(b);
-    }
+    if (fn_type & NS_INI) baseResetGyro(b);
 
     baseRunSteering(b, speed, 0, direction);
 
