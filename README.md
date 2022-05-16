@@ -26,7 +26,7 @@ make
 ### Makefile
 To create build instructions for `runX.c`, use this template:
 ```make
-runX: runX.c sensor.c motor.c shifter.c base.c module.c move.c pid.c
+runX: runX.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/runX
 ```
 To clean `build/` directory, use `make clean`.

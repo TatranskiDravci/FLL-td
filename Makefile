@@ -1,15 +1,17 @@
 CC = arm-linux-gnueabi-gcc
+DRIVERS = sensor.c motor.c
+INCLUDE = shifter.c base.c module.c move.c pid.c color.c
 
 # build all targets
 all: run1 run2 run3 calib colors
 
-run1: run1.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
+run1: run1.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/run1
 
-run2: run2.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
+run2: run2.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/run2
 
-run3: run3.c sensor.c motor.c shifter.c base.c module.c move.c pid.c color.c
+run3: run3.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/run3
 
 calib: calib.c sensor.c color.c
@@ -25,6 +27,9 @@ vpath %.c src/shifter
 vpath %.c src/module
 
 clean:
+	rm build/*
+
+clear:
 	rm build/*
 	rm data/*
 
