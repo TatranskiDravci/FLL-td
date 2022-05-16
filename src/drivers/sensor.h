@@ -14,15 +14,15 @@
 #ifndef SENSOR_H
 #define SENSOR_H
 
-#define SENSOR_PREFIX "/sys/class/lego-sensor/"         // path to sensors
+#include "config.h"
 
 typedef struct Sensor
 {
-    char command[50];                                   // command file path
-    char value[50];                                     // value<N> file path
-    char mode[50];                                      // mode file path
-    char decimals[50];                                  // decimlas file path
-    char num_values[50];                                // num_values file path
+    char command[PATH_LEN];                             // command file path
+    char value[PATH_LEN];                               // value<N> file path
+    char mode[PATH_LEN];                                // mode file path
+    char decimals[PATH_LEN];                            // decimlas file path
+    char num_values[PATH_LEN];                          // num_values file path
     double decimal;                                     // decimals constant
     int value_len;                                      // strlen() of value
     int exists;                                         // sensor existence (p.v. 1 - exists, 0 - does not exist)
