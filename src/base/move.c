@@ -117,7 +117,7 @@ void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl
         double error, x;
 
         error = ctl->SP - sensorReadDecimal(b.gyro, '0');
-        ctime = timeSeconds() - stime;       // elapsed time
+        ctime = timeSeconds() - stime;                      // elapsed time
 
         dtime = ctime - ptime;                              // time delta
         ptime = ctime;
