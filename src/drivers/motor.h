@@ -22,12 +22,12 @@
 
 typedef struct Motor
 {
-    char speed_sp[256];                                 // speed setpoint file path
-    char target_sp[256];                                // target setpoint file path
-    char command[256];                                  // command file path
-    char stop_action[256];                              // stop action file path
-    char position[256];                                 // position file path
-    char state[256];                                    // state file path
+    char speed_sp[50];                                  // speed setpoint file path
+    char target_sp[50];                                 // target setpoint file path
+    char command[50];                                   // command file path
+    char stop_action[50];                               // stop action file path
+    char position[50];                                  // position file path
+    char state[50];                                     // state file path
     int exists;                                         // motor existence (p.v. 1 - exists, 0 - does not exist)
 }
 motor;

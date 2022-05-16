@@ -19,8 +19,8 @@ motor motorNew(char port)
         {
             // match 'm' (from "motor") in dir->d_name to locate motor directories
             if (dir->d_name[0] == 'm') {
-                char mdname[256] = MOTOR_PREFIX;
-                char mdnamec[256], addr_raw[15];
+                char mdname[40] = MOTOR_PREFIX;
+                char mdnamec[35], addr_raw[15];
                 strcat(mdname, dir->d_name);
                 strcpy(mdnamec, mdname);            // copy mdname to mdnamec
                 strcat(mdname, "/address");         // get mdname'/address' file path
