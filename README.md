@@ -24,10 +24,15 @@ and build all targets,
 make
 ```
 ### Makefile
-To create build instructions for `runX.c`, use this template:
+To create build instructions for `runX.c`, use the template
 ```make
 runX: runX.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/runX
+```
+and (optionally) add `runX` to the default `all` build target
+```make
+# build all targets
+all: run1 run 2 ... runX
 ```
 To clean `build/` directory, use `make clean`.
 
