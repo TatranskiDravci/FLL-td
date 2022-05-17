@@ -35,12 +35,10 @@ sensor sensorNew(char port)
                 {
                     // copy addr. and concat. aprrop. file names
                     strcpy(s.command, mdnamec);
-                    strcpy(s.num_values, mdnamec);
                     strcpy(s.value, mdnamec);
                     strcpy(s.mode, mdnamec);
                     strcpy(s.decimals, mdnamec);
                     strcat(s.command, "/command");
-                    strcat(s.num_values, "/num_values");
                     strcat(s.value, "/value");
                     strcat(s.mode, "/mode");
                     strcat(s.decimals, "/decimals");
