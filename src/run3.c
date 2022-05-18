@@ -37,14 +37,14 @@ int main(void)
     moveColor(b, 700, cs_f, 0.0, 8.0, &ctl, FWD, NS_INI);
     moveColor(b, 700, cs_f, 100.0, 20.0, &ctl, FWD, NS_MID);
     moveColor(b, 700, cs_f, 0.0, 8.0, &ctl, FWD, NS_FIN);
-    moveTimed(b, 500, 2, &ctl, FWD, NS_STD);
+    moveTimed(b, 500, 2.4, &ctl, FWD, NS_STD);
     moveColor(b, 500, cs_s, 0.0, 8.0, &ctl, FWD, NS_STD);
 
     // put down boxes
     moduleDrive(s, -3960, 0);
 
     // go back
-    moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
+    moveTimed(b, 500, 0.2, &ctl, BWD, NS_STD);
 
     // turn left and do the heli
     moduleAsyncDrive(s, 3960, 0);
@@ -52,27 +52,33 @@ int main(void)
     moveTimed(b, 500, 0.8, &ctl, FWD, NS_STD);
     rotate(b, -60, 400);
     moveTimed(b, 500, 0.7, &ctl, FWD, NS_STD);
-    moveTimed(b, 500, 0.6, &ctl, BWD, NS_STD);
+    moveTimed(b, 500, 0.2, &ctl, BWD, NS_STD);
     rotate(b, 60, 400);
     moduleAwaitDrive(s);
 
-    // put down forks
+    // put down forks and raise the rail repair
     moduleDrive(s, -900, 1);
-
-    // lower pusher stick
-    moduleDrive(s, -400, 2);
+    moduleDrive(s, -800, 3);
 
     // reverse
-    moveTimed(b, 500, 1.0, &ctl, BWD, NS_STD);
+    moveTimed(b, 200, 3.3, &ctl, BWD, NS_STD);
+
+    // rail repair
+    
+    moduleDrive(s, 800, 3);
 
     // raise forks
     moduleDrive(s, 900, 1);
 
-    // adjust push stick
-    moduleDrive(s, 45, 2);
+    // go fwd
+    moveTimed(b, 500, 1.0, &ctl, FWD, NS_STD);
+    
+    // lower pusher stick
+    moduleDrive(s, -400, 2);
 
-    // reverse a bit more
-    moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
+    // reverse
+    moveTimed(b, 500, 0.9, &ctl, BWD, NS_STD);
+    rotate(b, -90, 400);
 
     shifterShift(s, 0);
 

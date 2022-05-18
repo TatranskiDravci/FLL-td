@@ -47,9 +47,12 @@ int main(void)
 
     // inno project
     moduleDrive(s, -120, 2);
+    sleep(0.3);
+    moduleDrive(s, 110, 2);
+    moduleDrive(s, 30, 2);
 
-    moveTimed(b, 500, 0.5, &ctl, BWD, NS_STD);
-    moveColor(b, 500, cs_f, 100.0, 20.0, &ctl, BWD, NS_STD);
+    moveTimed(b, 500, 0.45, &ctl, BWD, NS_STD);
+    moveColor(b, 500, cs_s, 100.0, 20.0, &ctl, BWD, NS_STD);
     rotate(b, -94, 400);
     moveTimed(b, 500, 1, &ctl, BWD, NS_STD);
 
@@ -61,8 +64,13 @@ int main(void)
     moveTimed(b, 500, 0.6, &ctl, FWD, NS_STD);
     rotate(b, 90, 400);
     moduleAwaitDrive(s);                            // await drive from line 58 to prevent errors
-    moduleAsyncDrive(s, 360, 0);
-    moveTimed(b, 500, 2.0, &ctl, BWD, NS_STD);
+    moveColor(b, 500, cs_s, 100.0, 20.0, &ctl, BWD, NS_INI);
+    moveColor(b, 500, cs_s, 0.0, 5.0, &ctl, BWD, NS_FIN);
+    moveTimed(b, 300, 0.5, &ctl, BWD, NS_STD);
+    moduleDrive(s, 360, 0);
+    moveTimed(b, 500, 0.7, &ctl, BWD, NS_STD);
+    moveTimed(b, 500, 0.5, &ctl, FWD, NS_STD);
+
     // take robot from mat by hand
 
     shifterShift(s, 0);
