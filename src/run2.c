@@ -61,14 +61,14 @@ int main(void)
     moduleAsyncDrive(s, -900, 3);
 
     // truck
-    moveTimed(b, 500, 0.6, &ctl, FWD, NS_STD);
+    moveTimed(b, 500, 0.65, &ctl, FWD, NS_STD);
     rotate(b, 90, 400);
     moduleAwaitDrive(s);                            // await drive from line 58 to prevent errors
     moveColor(b, 500, cs_s, 100.0, 20.0, &ctl, BWD, NS_INI);
     moveColor(b, 500, cs_s, 0.0, 5.0, &ctl, BWD, NS_FIN);
     moveTimed(b, 300, 0.5, &ctl, BWD, NS_STD);
     moduleDrive(s, 360, 0);
-    moveTimed(b, 500, 0.7, &ctl, BWD, NS_STD);
+    moveTimed(b, 700, 0.6, &ctl, BWD, NS_STD);
     moveTimed(b, 500, 0.5, &ctl, FWD, NS_STD);
 
     // take robot from mat by hand

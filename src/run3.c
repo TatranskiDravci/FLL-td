@@ -26,6 +26,7 @@ int main(void)
     getc(stdin);
 
     // get to line
+    moduleAsyncDrive(s, -720, 2);
     moveTimed(b, 300, 0.4, &ctl, FWD, NS_STD);
     rotate(b, -50, 400);
     moveColor(b, 700, cs_s, 0.0, 7.0, &ctl, FWD, NS_INI);
@@ -45,6 +46,7 @@ int main(void)
 
     // go back
     moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
+    moduleAwaitDrive(s);
 
     // turn left and do the heli
     moduleAsyncDrive(s, 3960, 0);
@@ -77,7 +79,8 @@ int main(void)
     moveTimed(b, 500, 2.0, &ctl, FWD, NS_STD);
     
     // lower pusher stick
-    moduleDrive(s, 540, 2);
+    moduleDrive(s, 720, 2);
+    sleep(0.2);
 
     // reverse
     moveTimed(b, 800, 1.8, &ctl, BWD, NS_STD);
