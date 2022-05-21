@@ -80,7 +80,7 @@ int main(void)
     
     // lower pusher stick
     moduleDrive(s, 720, 2);
-    sleep(0.2);
+    sleep(0.5);
 
     // reverse
     moveTimed(b, 800, 1.8, &ctl, BWD, NS_STD);

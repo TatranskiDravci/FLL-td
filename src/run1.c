@@ -31,26 +31,31 @@ int main(void)
     moveColor(b, 100, cs_s, 0.0, 10.0, &ctl, FWD, NS_STD);
 
     // cargo plane
-    moduleDrive(s, -530, 3);
+    moduleDrive(s, -540, 3);
 
     // motor setup
     moduleDrive(s,  180, 2);
 
     // plane
     moduleDrive(s,  550, 1);
-    sleep(0.5);
-    moduleDrive(s, -550, 1);
-    moduleDrive(s,  550, 1);
+    rotate(b, 30, 400);
+    rotate(b, -30, 400);
     moduleDrive(s, -550, 1);
 
     // cargo plane stick up
-    moduleDrive(s,  530, 3);
+    moduleDrive(s,  540, 3);
 
     // nudge motor
     moveTimed(b, 600, 0.3, &ctl, FWD, NS_STD);
-    moduleDrive(s, -180, 2);
+    moduleDrive(s, -360, 2);
+
+    // green container
+    moduleDrive(s, -180, 0);
 
     // back
+    moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
+    rotate(b, 45, 500);                         // push containers
+    rotate(b, -45, 500);
     moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
 
     shifterShift(s, 0);
