@@ -49,8 +49,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
         ctl->integral = 0.0;
     }
 
-    double stime, ptime, ctime;
-    double perror, integral;
+    double stime, ptime, ctime, perror, integral;
     stime = ctl->stime;
     ptime = ctl->ptime;
     perror = ctl->perror;
@@ -60,8 +59,7 @@ void moveTimed(base b, int speed, double duration, pid *ctl, int direction, int 
     while ((ctime = timeSeconds() - stime) < duration)
     {
         // course correction
-        double dtime;
-        double error, x;
+        double dtime, error, x;
 
         error = ctl->SP - sensorReadDecimal(b.gyro, '0');
 
@@ -102,8 +100,7 @@ void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl
         ctl->integral = 0.0;
     }
 
-    double stime, ptime;
-    double perror, integral;
+    double stime, ptime, perror, integral;
     stime = ctl->stime;
     ptime = ctl->ptime;
     perror = ctl->perror;
@@ -113,8 +110,7 @@ void moveColor(base b, int speed, color cs, double value, double delta, pid *ctl
     while (fabs(colorRead(cs) - value) > delta)
     {
         // course correction
-        double ctime, dtime;
-        double error, x;
+        double ctime, dtime, error, x;
 
         error = ctl->SP - sensorReadDecimal(b.gyro, '0');
         ctime = timeSeconds() - stime;                      // elapsed time
