@@ -54,8 +54,6 @@ int main(void)
 
     // back
     moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
-    rotate(b, 45, 500);                         // push containers
-    rotate(b, -45, 500);
     moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
 
     shifterShift(s, 0);
