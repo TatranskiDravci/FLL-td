@@ -44,8 +44,8 @@ int main(void)
     
     // container
     moveTimed(b, 500, 1.4, &ctl, FWD, NS_STD);
-    moduleDrive(s, -60, 1);
-    moveTimed(b, 500, 0.7, &ctl, BWD, NS_STD);
+    moduleDrive(s, -120, 1);
+    moveTimed(b, 500, 0.55, &ctl, BWD, NS_STD);
 
     // inno project
     moduleDrive(s, -120, 2);
@@ -53,7 +53,7 @@ int main(void)
     moduleDrive(s, 110, 2);
     moduleDrive(s, 30, 2);
 
-    moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
+    //moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
     moveColor(b, 500, cs_m, 0.0, 7.0, &ctl, BWD, NS_STD);
     rotate(b, -94, 400);
     moveTimed(b, 500, 1.0, &ctl, BWD, NS_STD);

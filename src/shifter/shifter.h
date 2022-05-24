@@ -4,7 +4,7 @@
 #include "../drivers/motor.h"
 
 // shifter constants
-#define SHIFTER_RATE 400
+#define SHIFTER_RATE 300
 #define SHIFTER_OFFSET 90
 #define SHIFTER_CORRECT -3
 

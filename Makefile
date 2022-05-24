@@ -3,7 +3,7 @@ DRIVERS = sensor.c motor.c
 INCLUDE = shifter.c base.c module.c move.c pid.c color.c
 
 # build all targets
-all: run1 run2 run3 calib colors
+all: run1 run2 run3 run4 calib colors
 
 run1: run1.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/run1
@@ -13,6 +13,9 @@ run2: run2.c $(DRIVERS) $(INCLUDE)
 
 run3: run3.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/run3
+
+run4: run4.c $(DRIVERS) $(INCLUDE)
+	$(CC) $^ -o build/run4
 
 calib: calib.c sensor.c color.c
 	$(CC) $^ -o build/calib
