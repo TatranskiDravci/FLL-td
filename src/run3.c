@@ -27,7 +27,7 @@ int main(void)
 
     // get to line
     moduleAsyncDrive(s, -1440, 3);
-    moveTimed(b, 300, 0.4, &ctl, FWD, NS_STD);
+    moveTimed(b, 300, 0.35, &ctl, FWD, NS_STD);
     rotate(b, -50, 400);
     moveColor(b, 700, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
     moveColor(b, 200, cs_l, 100.0, 20.0, &ctl, FWD, NS_FIN);
@@ -69,11 +69,14 @@ int main(void)
 
 
     // put down forks
+    moduleDrive(s, 1800, 0);
+    moveTimed(b, 300, 0.35, &ctl, FWD, NS_STD);
     rotate(b, 90, 400);
+    moveTimed(b, 500, 0.5, &ctl, FWD, NS_STD);
     moduleDrive(s, -900, 1);
 
     // reverse
-    moveTimed(b, 200, 3.0, &ctl, BWD, NS_STD);
+    moveTimed(b, 200, 2.5, &ctl, BWD, NS_STD);
 
     // rail repair
     moduleDrive(s, 1440, 3);
@@ -83,19 +86,20 @@ int main(void)
     moduleDrive(s, 900, 1);
 
     // go fwd
-    moveTimed(b, 500, 2.0, &ctl, FWD, NS_STD);
+    moveTimed(b, 500, 1.75, &ctl, FWD, NS_STD);
     
     // lower pusher stick
     moduleDrive(s, 500, 2);
     sleep(0.5);
 
     // reverse
-    moveTimed(b, 800, 1.5, &ctl, BWD, NS_STD);
+    moveTimed(b, 900, 2, &ctl, BWD, NS_STD);
 
     // return
     moveTimed(b, 500, 0.6, &ctl, FWD, NS_STD);
     moduleDrive(s, -500, 2);
-    rotate(b, -80, 400);
+    moduleDrive(s, -1440, 3);
+    rotate(b, -85, 400);
     moveTimed(b, 700, 7, &ctl, BWD, NS_STD);
 
     shifterShift(s, 0);
