@@ -17,6 +17,9 @@ run3: run3.c $(DRIVERS) $(INCLUDE)
 run4: run4.c $(DRIVERS) $(INCLUDE)
 	$(CC) $^ -o build/run4
 
+run: run.c $(DRIVERS) $(INCLUDE)
+	$(CC) $^ -o build/run
+
 calib: calib.c sensor.c color.c
 	$(CC) $^ -o build/calib
 

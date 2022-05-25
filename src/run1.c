@@ -14,7 +14,7 @@ int main(void)
     shifter s;
     color cs_f, cs_s;
 
-    b = baseNew('D', 'A', '1');
+    b = baseNew('D', 'A', '2');
     ctl = pidNew(0.0, 25.0, 25.0, 0.0);
     s = shifterNew('B', 'C');
     cs_f = colorNew('4');

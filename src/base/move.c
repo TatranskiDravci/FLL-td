@@ -26,7 +26,7 @@ void rotate(base b, int target, int speed)
         if (angle == target)
         {
             baseStop(b);
-            sleep(0.1);
+            sleep(0.5);
 
             // "2x meraj a 1x rež"
             if (sensorRead(b.gyro, '0') == target) return;
