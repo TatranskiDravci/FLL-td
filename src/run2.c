@@ -54,7 +54,7 @@ int main(void)
     moduleDrive(s, -30, 2);
 
     moveTimed(b, 500, 0.3, &ctl, BWD, NS_INI);
-    moveColor(b, 500, cs_m, 0.0, 7.0, &ctl, BWD, NS_FIN);
+    moveColor(b, 700, cs_m, 0.0, 7.0, &ctl, BWD, NS_FIN);
     rotate(b, -93, 400);
     moveTimed(b, 500, 1.0, &ctl, BWD, NS_STD);
 
@@ -68,16 +68,16 @@ int main(void)
     moveColor(b, 500, cs_m, 0.0, 7.0, &ctl, FWD, NS_STD);
     moveTimed(b, 500, 0.35, &ctl, BWD, NS_STD);
     rotate(b, 90, 400);
-    moveColor(b, 500, cs_l, 100.0, 20.0, &ctl, BWD, NS_INI);
-    moveColor(b, 500, cs_l, 0.0, 5.0, &ctl, BWD, NS_FIN);
+    moveColor(b, 700, cs_l, 100.0, 20.0, &ctl, BWD, NS_INI);
+    moveColor(b, 700, cs_l, 0.0, 5.0, &ctl, BWD, NS_FIN);
     moveTimed(b, 300, 0.5, &ctl, BWD, NS_STD);
     moduleDrive(s, 360, 0);
-    sleep(0.5);
-    moveTimed(b, 700, 0.6, &ctl, BWD, NS_STD);
+    sleep(1.0);
+    moveTimed(b, 900, 0.4, &ctl, BWD, NS_STD);
     moveTimed(b, 500, 0.5, &ctl, FWD, NS_STD);
-
-    // take robot from mat by hand
-
+    rotate(b, 45, 500);
+    moveTimed(b, 500, 3.0, &ctl, BWD, NS_STD);
+    
     shifterShift(s, 0);
 
     return 0;

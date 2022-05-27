@@ -39,7 +39,7 @@ int main(void)
     // plane
     moduleDrive(s,  550, 1);
     rotate(b, 30, 400);
-    rotate(b, -30, 400);
+    rotate(b, -25, 400);
     moduleDrive(s, -550, 1);
 
     // cargo plane stick up
