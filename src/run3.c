@@ -76,7 +76,7 @@ int main(void)
     moduleDrive(s, -2160, 1);
 
     // reverse
-    moveTimed(b, 200, 2.5, &ctl, BWD, NS_STD);
+    moveTimed(b, 450, 1, &ctl, BWD, NS_STD);
 
     // rail repair
     moduleDrive(s, 1440, 3);
@@ -86,11 +86,11 @@ int main(void)
     moduleDrive(s, 2160, 1);
 
     // go fwd
-    moveTimed(b, 500, 1.8, &ctl, FWD, NS_STD);
+    moveTimed(b, 900, 1.0, &ctl, FWD, NS_STD);
     
     // lower pusher stick
     moduleDrive(s, 500, 2);
-    sleep(1.0);
+    sleep(0.7);
 
     // reverse
     moveTimed(b, 900, 2, &ctl, BWD, NS_STD);
