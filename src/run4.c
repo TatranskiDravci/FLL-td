@@ -23,8 +23,6 @@ int main(void)
     colorProfileLoad(&cs_m, "../data/profile_k_F", "../data/profile_l_F");
     colorProfileLoad(&cs_l, "../data/profile_k_S", "../data/profile_l_S");
 
-    getc(stdin);
-
     // nudge fwd
     moveTimed(b, 500, 0.85, &ctl, FWD, NS_STD);
     rotate(b, -90, 400);

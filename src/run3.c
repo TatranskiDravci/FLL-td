@@ -12,96 +12,47 @@ int main(void)
     base b;
     pid ctl;
     shifter s;
-    color cs_m, cs_l;
+    color cs_f, cs_s;
 
     b = baseNew('D', 'A', '2');
     ctl = pidNew(0.0, 25.0, 25.0, 0.0);
     s = shifterNew('B', 'C');
-    cs_m = colorNew('4');
-    cs_l = colorNew('3');
+    cs_f = colorNew('4');
+    cs_s = colorNew('3');
 
-    colorProfileLoad(&cs_m, "../data/profile_k_F", "../data/profile_l_F");
-    colorProfileLoad(&cs_l, "../data/profile_k_S", "../data/profile_l_S");
+    colorProfileLoad(&cs_f, "../data/profile_k_F", "../data/profile_l_F");
+    colorProfileLoad(&cs_s, "../data/profile_k_S", "../data/profile_l_S");
 
-    getc(stdin);
+    // get to position
+    moveTimed(b, 600, 1.5, &ctl, FWD, NS_STD);
+    moveLine(b, 500, cs_f, cs_s, 100.0, 8.0, -41, FWD, LBRW, NS_STD);
+    moveColor(b, 100, cs_s, 0.0, 10.0, &ctl, FWD, NS_STD);
 
-    // get to line
-    moduleAsyncDrive(s, -1440, 3);
-    moveTimed(b, 300, 0.35, &ctl, FWD, NS_STD);
-    rotate(b, -50, 400);
-    moveColor(b, 700, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
-    moveColor(b, 200, cs_l, 100.0, 20.0, &ctl, FWD, NS_FIN);
-    moveTimed(b, 200, 2.0, &ctl, FWD, NS_STD);
-    rotate(b, -38, 400);
-    moduleAwaitDrive(s);
-    moduleAsyncDrive(s, -500, 2);
+    // cargo plane
+    moduleDrive(s, -540, 3);
 
-    // move on line
-    moveColor(b, 900, cs_m, 0.0, 8.0, &ctl, FWD, NS_INI);
-    moveColor(b, 900, cs_m, 100.0, 20.0, &ctl, FWD, NS_MID);
-    moveColor(b, 900, cs_m, 0.0, 8.0, &ctl, FWD, NS_FIN);
-    moveTimed(b, 900, 1.4, &ctl, FWD, NS_INI);
-    moveColor(b, 700, cs_l, 0.0, 8.0, &ctl, FWD, NS_FIN);
-    moduleAwaitDrive(s);
+    // motor setup
+    moduleDrive(s,  180, 2);
 
-    // put down boxes
-    moduleDrive(s, -3960, 0);
+    // plane
+    moduleDrive(s,  550, 1);
+    rotate(b, 30, 400);
+    rotate(b, -30, 400);
+    moduleDrive(s, -550, 1);
 
-    // go back
-    moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD); 
+    // cargo plane stick up
+    moduleDrive(s,  540, 3);
 
-    // turn left and do the heli
-    // moduleAsyncDrive(s, 3960, 0);       // raise box downer
-    // rotate(b, 90, 400);                 // turn left
-    // moveColor(b, 500, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
-    // moveTimed(b, 500, 0.7, &ctl, FWD, NS_FIN);
-    // rotate(b, -60, 400);
-    // moveColor(b, 500, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
-    // moveColor(b, 500, cs_l, 100.0, 20.0, &ctl, FWD, NS_FIN);
-    // moveTimed(b, 500, 0.15, &ctl, FWD, NS_STD);
-    // moduleAwaitDrive(s);
-    // moveColor(b, 500, cs_l, 0.0, 7.0, &ctl, BWD, NS_INI);
-    // moveColor(b, 500, cs_l, 100.0, 20.0, &ctl, BWD, NS_MID);
-    // moveColor(b, 500, cs_l, 18.0, 7.0, &ctl, BWD, NS_FIN);
-    // moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
-    // rotate(b, 60, 400);
+    // nudge motor
+    moveTimed(b, 600, 0.3, &ctl, FWD, NS_STD);
+    moduleDrive(s, -360, 2);
 
+    // green container
+    moduleDrive(s, -180, 0);
 
-
-    // put down forks
-    moduleDrive(s, 1800, 0);
-    moveTimed(b, 300, 0.35, &ctl, FWD, NS_STD);
-    rotate(b, 90, 400);
-    moveTimed(b, 500, 0.5, &ctl, FWD, NS_STD);
-    moduleDrive(s, -2160, 1);
-
-    // reverse
-    moveTimed(b, 450, 1, &ctl, BWD, NS_STD);
-
-    // rail repair
-    moduleDrive(s, 1440, 3);
-
-    // raise forks
-    moveTimed(b, 300, 0.15, &ctl, FWD, NS_STD);
-    moduleDrive(s, 2160, 1);
-
-    // go fwd
-    moveTimed(b, 900, 1.0, &ctl, FWD, NS_STD);
-    
-    // lower pusher stick
-    moduleDrive(s, 500, 2);
-    sleep(0.7);
-
-    // reverse
-    moveTimed(b, 900, 2, &ctl, BWD, NS_STD);
-
-    // return
-    moveTimed(b, 500, 0.6, &ctl, FWD, NS_STD);
-    moduleDrive(s, -500, 2);
-    moduleDrive(s, -1440, 3);
-    rotate(b, -85, 400);
-    shifterShift(s, 0);
-    moveTimed(b, 900, 7, &ctl, BWD, NS_STD);
+    // back
+    moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
+    moveTimed(b, 900, 1.0, &ctl, BWD, NS_STD);
 
     shifterShift(s, 0);
 

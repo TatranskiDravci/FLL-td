@@ -1,0 +1,4 @@
+#!/bin/sh
+
+../build/run2
+rm *.log
