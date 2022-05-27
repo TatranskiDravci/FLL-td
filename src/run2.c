@@ -48,24 +48,6 @@ int main(void)
     // go back
     moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
 
-    // turn left and do the heli
-    // moduleAsyncDrive(s, 3960, 0);       // raise box downer
-    // rotate(b, 90, 400);                 // turn left
-    // moveColor(b, 500, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
-    // moveTimed(b, 500, 0.7, &ctl, FWD, NS_FIN);
-    // rotate(b, -60, 400);
-    // moveColor(b, 500, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
-    // moveColor(b, 500, cs_l, 100.0, 20.0, &ctl, FWD, NS_FIN);
-    // moveTimed(b, 500, 0.15, &ctl, FWD, NS_STD);
-    // moduleAwaitDrive(s);
-    // moveColor(b, 500, cs_l, 0.0, 7.0, &ctl, BWD, NS_INI);
-    // moveColor(b, 500, cs_l, 100.0, 20.0, &ctl, BWD, NS_MID);
-    // moveColor(b, 500, cs_l, 18.0, 7.0, &ctl, BWD, NS_FIN);
-    // moveTimed(b, 500, 0.3, &ctl, BWD, NS_STD);
-    // rotate(b, 60, 400);
-
-
-
     // put down forks
     moduleDrive(s, 1800, 0);
     moveTimed(b, 300, 0.35, &ctl, FWD, NS_STD);
