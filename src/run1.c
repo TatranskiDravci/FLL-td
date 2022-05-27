@@ -27,14 +27,14 @@ int main(void)
     
 
     // get to line
+    moduleAsyncDrive(s, -900, 3); // retract crane arm
     moveTimed(b, 300, 0.5, &ctl, FWD, NS_STD);
     rotate(b, -50, 400);
-    moveColor(b, 900, cs_l, 0.0, 7.0, &ctl, FWD, NS_INI);
+    moveTimed(b, 900, 0.2, &ctl, FWD, NS_INI);
+    moveColor(b, 900, cs_l, 0.0, 7.0, &ctl, FWD, NS_MID);
     moveColor(b, 300, cs_l, 100.0, 20.0, &ctl, FWD, NS_FIN);
     moveTimed(b, 300, 2.0, &ctl, FWD, NS_STD);
     rotate(b, -37, 400);
-    moduleAwaitDrive(s);
-    moduleAsyncDrive(s, -900, 3); // retract crane arm
 
     // bridge
     moveColor(b, 900, cs_m, 0.0, 5.0, &ctl, FWD, NS_INI);
@@ -43,7 +43,7 @@ int main(void)
     moduleAwaitDrive(s);
     
     // container
-    moveTimed(b, 900, 0.8, &ctl, FWD, NS_STD);
+    moveTimed(b, 900, 0.9, &ctl, FWD, NS_STD);
     moduleDrive(s, -180, 1);
     moveTimed(b, 900, 0.28, &ctl, BWD, NS_STD);
 
@@ -56,7 +56,7 @@ int main(void)
     moveTimed(b, 500, 0.3, &ctl, BWD, NS_INI);
     moveColor(b, 700, cs_m, 0.0, 7.0, &ctl, BWD, NS_FIN);
     rotate(b, -93, 400);
-    moveTimed(b, 900, 0.5, &ctl, BWD, NS_STD);
+    moveTimed(b, 900, 0.6, &ctl, BWD, NS_STD);
 
     // crane
     moduleAsyncDrive(s, 900, 3);
@@ -73,7 +73,7 @@ int main(void)
     moveTimed(b, 300, 0.5, &ctl, BWD, NS_STD);
     moduleDrive(s, 360, 0);
     sleep(0.7);
-    moveTimed(b, 900, 0.4, &ctl, BWD, NS_STD);
+    moveTimed(b, 900, 0.7, &ctl, BWD, NS_STD);
     moveTimed(b, 500, 0.5, &ctl, FWD, NS_STD);
     rotate(b, 45, 500);
     moveTimed(b, 500, 3.0, &ctl, BWD, NS_STD);
