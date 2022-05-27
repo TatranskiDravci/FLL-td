@@ -1,4 +1,0 @@
-#!/bin/sh
-
-../build/run4
-rm *.log
