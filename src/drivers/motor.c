@@ -61,7 +61,7 @@ motor motorNew(char port)
 void motorSetPosition(motor m, int position)
 {
     FILE *fp;
-    fp= fopen(m.position, "w");
+    fp = fopen(m.position, "w");
     fprintf(fp, "%d", position);
     fclose(fp);
 }
